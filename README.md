@@ -91,6 +91,9 @@ npm start
 - LoginPage
 - ProfilePage
 - SignupPage
+- Comment
+- like
+- search
 - Navbar
 
 ## Links
