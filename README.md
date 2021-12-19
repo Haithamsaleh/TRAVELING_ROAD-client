@@ -22,6 +22,47 @@ and the other users commint on the post to help or even arrange meeting to disco
 - **Deleat Commint:** As a Admin I can deleat any Commint 
 - **banned  user:** As a Admin I can banned any user from commint and post 
 
+## Getting Started
+
+### Installing Dependencies
+
+
+#### NPM Dependencies
+
+Once you have the project in your local machine, install dependencies by running:
+
+```bash
+npm i
+```
+
+This will install all of the required packages.
+
+##### Key Dependencies
+
+- [React](https://reactjs.org/) A JavaScript library for building user interfaces.
+
+- [axios](https://www.npmjs.com/package/axios) is a promise based HTTP client for the browser and node.js.
+
+- [redux](https://www.npmjs.com/package/redux) is a predictable state container for JavaScript apps.
+
+- [react-redux](https://www.npmjs.com/package/react-redux) is a React bindings for Redux.
+
+- [react-icons](https://react-icons.github.io/react-icons/) Include popular icons in your React projects easily with react-icons.
+
+- [sweetalert2](https://sweetalert2.github.io/) A Beautiful, Responsive, Customizable, Accessible (Wai-aria) Replacement For Javascript's Popup Boxes.
+
+
+## Running the server
+
+To run the server, execute:
+
+```bash
+npm start
+```
+
+
+
+
 # Client / Frontend
 
 ## React Router Routes (React App)
@@ -52,114 +93,6 @@ and the other users commint on the post to help or even arrange meeting to disco
 - SignupPage
 - Navbar
 
-# Server / Backend
-
-## Models
-
-User model
-
-```
-{
-  username: {type: String, required: true, unique: true},
-  email: {type: String, required: true, unique: true},
-  password: {type: String, required: true},
-  Phonenumber: {type: Number},
-  HomeTown: {type: String},
-  Sex: {type: String},
-  Avatar : {type: String, required: true, default:},
-  Bio: {type: String},
-  VistedContry: {type: String},
-  isdel: {type: boolean, default: false},
-  isbanned: {type: boolean, default: false},
-  rloe: {type: Schema.Types.ObjectId,ref:'Role'},
-  Activate : {type: boolean, default: false},
-}
-```
-
-
-Post model
-
-```
- {
-   Titel: {type: String, required: true},
-   img: {type: String},
-   post: {type: String, required: true},
-   date: { type: String, default: new Date() },
-   isdel: {type: boolean, default: false},
-   isclose: {type: boolean, default: false},
-   Comment: {type: Schema.Types.ObjectId,ref:'Comment'},
-   creator: {type: Schema.Types.ObjectId,ref:'User'}
-   like: {type: Schema.Types.ObjectId,ref:'Like'}
-   tag: {type: String},
-
-
-   
- }
-```
-meetup model
-
-```
- {
-   Titel: {type: String, required: true},
-   img: {type: String},
-   dese: {type: String, required: true},
-   date: { type: String, default: new Date() },
-   isdel: {type: boolean, default: false},
-   isclose: {type: boolean, default: false},
-   Comment: {type: Schema.Types.ObjectId,ref:'Comment'},
-   creator: {type: Schema.Types.ObjectId,ref:'User'}
-   like: {type: Schema.Types.ObjectId,ref:'Like'}
-   tag: {type: String},
-
-
-   
- }
-```
-service model
-
-```
- {
-   Titel: {type: String, required: true},
-   img: {type: String},
-   dese: {type: String, required: true},
-   date: { type: String, default: new Date() },
-   price: {type: Number},
-   isdel: {type: boolean, default: false},
-   isclose: {type: boolean, default: false},
-   Comment: {type: Schema.Types.ObjectId,ref:'Comment'},
-   creator: {type: Schema.Types.ObjectId,ref:'User'}
-   raet: {type: Schema.Types.ObjectId,ref:'Like'}
-   tag: {type: String},
-
-
-   
- }
-```
-
-
-## Backend routes
-
-| HTTP Method | URL            | Request Body                                                 | Success status | Error Status | Description                                                  |
-| ----------- | -------------- | ------------------------------------------------------------ | -------------- | ------------ | ------------------------------------------------------------ |
-| GET         | `/login/:id`     |                                                              | 200            | 404          | Check if user is logged in and return profile page           |
-| POST        | `/signup` | {username, email, password}                                    | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
-| POST        | `/login`  | {email, password}                                         | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session |
-| POST        | `/logout` | (empty)                                                      | 204            | 400          | Logs out the user                                            |
-| GET         | /post/:id         | (empty) | 200               | 404             |Used to get one post by id . |
-| GET         | /posts         | (empty) | 200               | 404             |Used to get all posts. |
-| PUT         | /post/:id  | {username, img, titel, post, tag |  201           | 400          | Used to update one post by id                 |
-| POST        | /post/creta| {username, img, titel, post, tag} |                |              | Used to create post , using current logged in user id as a creator. |
-| DELETE      | /post/:id  |                                                              | 200            | 401          | Used to delete one post id                 |
-| GET         | /meetup/:id   | (empty) | 200               | 404             |Used to get one meetup by id|
-| GET         | /meetsup        | (empty) | 200               | 404             |Used to get all meetup. |
-| PUT         | /meetup/:id  | {username, img, titel, post, tag,|  201           | 400          | Used to update one meetup by id .          |
-| POST        | /meetup/creta| {username, img, titel, post, tag} |                |              | Used to create meetup , using current logged in user id as a creator. |
-| DELETE      | /meetup/:id  |                                                              | 200            | 401          | Used to delete one meetup by id .            |
-| GET         | /service/:id  | (empty) | 200               | 404             |Used to get one service by id|
-| GET         | /services       | (empty) | 200               | 404             |Used to get all service. |
-| PUT         | /service/:id  | {username, img, titel, post, tag,|  201           | 400          | Used to update one service by id .          |
-| POST        | /service/creta| {username, img, titel, post, tag} |                |              | Used to create service , using current logged in user id as a creator. |
-| DELETE      | /service/:id  |                                                              | 200            | 401          | Used to delete one service by id .            |
 ## Links
 ### Trello
 [Link to your trello board](https://trello.com/mpprojecthaitham) 
@@ -188,9 +121,4 @@ Service page
 ![Service page](./img/serves_page.png)
 
 ## UML
-![UML](./img/UML.png)
-
-## ERD
-![ERD](./img/ERD.png)
-
-
+![UML](./img/UML_f.png)
