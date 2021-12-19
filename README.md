@@ -80,7 +80,7 @@ npm start
 | `/meetup/:id`    | meetup Page          | public `<Route>`           | read the meet up for all , and commint ,like and aplly for useres, and edit for the owner      |
 | `/services`      | services Page        | public `<Route>`           | Shows all services                                           |
 | `/service/create`| create service Page  | user only `<PrivateRoute>` | create a service                                             |
-| `/service/:id`   | service Page         | public `<Route>`           | read the service for all , and commint ,rate  and booking for useres, and edit for the owner      |
+| `/service/:id`   | service Page         | public `<Route>`           | read the service for all , and commint ,rate  and booking for useres, and edit for the owner   |
 | `/profile/:id`   | service Page         | public `<Route>`           | read for all , and edit for the owner                        |
 
 ## Components
