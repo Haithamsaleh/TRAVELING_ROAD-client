@@ -7,7 +7,7 @@ import Login from './components/Login';
 import Signup from './components/Singup';
 import Footer from './components/Footer/Footer';
 import Account from './components/Account';
-import Posts from './components/Books'
+import Posts from './components/Posts'
 import Reset from './components/Reset'
 function App() {
   return (

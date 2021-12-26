@@ -1,13 +1,13 @@
 //import './App.css';
 import React from 'react'
-import {Route,Routes,Link} from "react-router-dom";
-import Home from './../Home';
-import Books from './../Books';
-import Navbar from './../navbar';
-import Login from './../Login';
-import Singup from './../Singup';
+import {Link} from "react-router-dom";
+// import Home from './../Home';
+// import Posts from './../Posts';
+// import Navbar from './../navbar';
+// import Login from './../Login';
+// import Singup from './../Singup';
 import logo from "./logo.png"
-import Account from './../../components/Account'
+// import Account from './../../components/Account'
 const NavBar = () => {
   return (
 
@@ -22,7 +22,7 @@ const NavBar = () => {
      
      <li> <Link to="/Singup">Sing up</Link></li>
      
-     <li><Link to="/Books">Posts</Link></li>
+     <li><Link to="/Posts">Posts</Link></li>
      
      <li><Link to="/Login">login</Link></li>
      
