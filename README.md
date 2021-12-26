@@ -1,70 +1,127 @@
-# Getting Started with Create React App
+## Master Paece Project (Name)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+(Name):the app focus on traveling and cultural exchange to make it essayer for the Tourists
+to konw and the touristic places and historical places from Residents of the area ,
+so the user can Post on the app his destination and ask about : what to do and not to do ,shops for necessities ,events can vists ,Restaurants...etc.
+and the other users commint on the post to help or even arrange meeting to discover the plece together and make new friends .
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+## User Story 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Signup:**  user can sign up in the platform so that the user can start posts and reply to athers posts  
+- **Login:**  user can login to the platform so that the user can see his oun posts and reply to the comments on  it 
+- **Logout:** As a user I can logout from the platform so no one else can use my profile 
+- **Add New Posts:** As a user I can post new post
+- **Commint on posts:** As a user I can comment on all posts
+- **Messages:** As a user I can seand private  messages to Another user 
+- **Friend:** As a user I can add user to firends list and follow thers posts
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+##Admin Story 
+- **Deleat posts:** As a Admin I can deleat any post  
+- **Deleat Commint:** As a Admin I can deleat any Commint 
+- **banned  user:** As a Admin I can banned any user from commint and post 
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installing Dependencies
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### NPM Dependencies
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Once you have the project in your local machine, install dependencies by running:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm i
+```
 
-### `npm run eject`
+This will install all of the required packages.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+##### Key Dependencies
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [React](https://reactjs.org/) A JavaScript library for building user interfaces.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- [axios](https://www.npmjs.com/package/axios) is a promise based HTTP client for the browser and node.js.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- [redux](https://www.npmjs.com/package/redux) is a predictable state container for JavaScript apps.
 
-## Learn More
+- [react-redux](https://www.npmjs.com/package/react-redux) is a React bindings for Redux.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [react-icons](https://react-icons.github.io/react-icons/) Include popular icons in your React projects easily with react-icons.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [sweetalert2](https://sweetalert2.github.io/) A Beautiful, Responsive, Customizable, Accessible (Wai-aria) Replacement For Javascript's Popup Boxes.
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Running the server
 
-### Analyzing the Bundle Size
+To run the server, execute:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm start
+```
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+# Client / Frontend
 
-### Deployment
+## React Router Routes (React App)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+| Path             | Component            | Permissions                | Behavior                                                     |
+| ---------------- | -------------------- | -------------------------- | ------------------------------------------------------------ |
+| `/`              | homePage             | public `<Route>`           | Home page                                                    |
+| `/signup`        | SignupPage           | public `<Route>`           | Signup form, link to login, navigate to homepage after signup|
+| `/login`         | LoginPage            | public `<Route>`           | Login form, link to signup, navigate to homepage after login |
+| `/posts`         | posts Page           | public `<Route>`           | Shows all posts                                              |
+| `/post/create`   | create post Page     | user only `<PrivateRoute>` | create a post                                                |
+| `/post/:id`      | post Page            | public `<Route>`           | read the post for all , and commint and like for useres, and edit for the owner      |
+| `/meetsup`       | meets up Page        | public `<Route>`           | Shows all meets up                                           |
+| `/meetup/create` | create meetup Page   | user only `<PrivateRoute>` | create a meet up                                             |
+| `/meetup/:id`    | meetup Page          | public `<Route>`           | read the meet up for all , and commint ,like and aplly for useres, and edit for the owner      |
+| `/services`      | services Page        | public `<Route>`           | Shows all services                                           |
+| `/service/create`| create service Page  | user only `<PrivateRoute>` | create a service                                             |
+| `/service/:id`   | service Page         | public `<Route>`           | read the service for all , and commint ,rate  and booking for useres, and edit for the owner   |
+| `/profile/:id`   | service Page         | public `<Route>`           | read for all , and edit for the owner                        |
 
-### `npm run build` fails to minify
+## Components
+- HomePage
+- PostPage
+- MeetupPage
+- ServicePage
+- LoginPage
+- ProfilePage
+- SignupPage
+- Comment
+- like
+- search
+- Navbar
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Links
+### Trello
+[Link to your trello board](https://trello.com/mpprojecthaitham) 
+### Git
+
+
+[Client repository Link](https://github.com/MP-Project-Haitham/server)
+
+[Server repository Link](https://github.com/MP-Project-Haitham/client)
+
+[Deployed App Link](https://github.com/MP-Project-Haitham)
+### Slides
+
+
+[Slides Link](https://github.com/MP-Project-Haitham)
+
+### Wireframe
+
+Home page
+![Home page](./img/home.png)
+Post page
+![Post page](./img/post_page.png)
+Meetup page
+![Meetup page](./img/meet_up_page.png)
+Service page 
+![Service page](./img/serves_page.png)
+
+## UML
+![UML](./img/UML_f.png)
