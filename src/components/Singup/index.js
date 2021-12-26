@@ -5,7 +5,7 @@ import PasswordChecklist from "react-password-checklist";
 import axios from "axios";
 import "./style.css";
 import Swal from 'sweetalert2'
-const BASE_URL = "http://localhost:4000/";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Signup = () => {
 
   const signup = async () => {
     setMessage("");
-    const res = await axios.post(`http://localhost:4000/signUp`, {
+    const res = await axios.post(`${BASE_URL}signUp`, {
       username: username,
       email: email,
       password: password,

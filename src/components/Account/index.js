@@ -5,6 +5,8 @@ import withReactContent from "sweetalert2-react-content";
 import ReactCodeInput from "react-verification-code-input";
 import axios from "axios";
 // import "./style.css";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const MySwal = withReactContent(Swal);
 const Account = () => {
   const navigate = useNavigate();
@@ -13,8 +15,9 @@ const Account = () => {
   const verifyAccount = async () => {
     if (code.length > 0) {
       try {
+          // eslint-disable-next-line
         const res = await axios.post(
-          `http://localhost:4000/verify_account`,
+          `${BASE_URL}/verify_account`,
           {
             id,
             code,
@@ -51,22 +54,3 @@ const Account = () => {
   );
 };
 export default Account;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
