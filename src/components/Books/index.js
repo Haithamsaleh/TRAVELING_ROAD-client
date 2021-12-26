@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./style.css";
-import { Card } from "react-bootstrap";
-import { Button } from "react-bootstrap";
-import { Modal } from "react-modal";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const Posts = () => {
   const [posts, setposts] = useState([]);
 
   const data = async () => {
+    // eslint-disable-next-line
     const posts = await axios
-      .get("http://localhost:4000/posts")
+      .get(`${BASE_URL}/posts`)
       .then((dete) => {
         setposts(dete.data);
 
