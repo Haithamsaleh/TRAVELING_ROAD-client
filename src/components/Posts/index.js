@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./style.css";
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Posts = () => {
@@ -13,7 +14,7 @@ const Posts = () => {
       .then((dete) => {
         setposts(dete.data);
 
-        // console.log(dete.data);
+        console.log(dete.data);
       });
   };
 
@@ -35,11 +36,9 @@ const Posts = () => {
                 <h1 className="info__name">{item.title}</h1> 
 
                 <h2 className="info__name">{item.post}</h2>
-                
-                <p className="info__name">{item.user}</p>
-                <p className="info__name">{item.prantingDate}</p>
+                <img src={item.img} alt="img"/>
+                <h2 className="info__name">{item.date}</h2>
 
-                
               </div>
             </div>
           );
