@@ -7,6 +7,7 @@ import Navbar from './../navbar';
 import Login from './../Login';
 import Singup from './../Singup';
 import logo from "./logo.png"
+import Account from './../../components/Account'
 const NavBar = () => {
   return (
 
@@ -31,13 +32,7 @@ const NavBar = () => {
      </ul>
      </div>
   
-     <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/Books" element={<Books/>} />
-          <Route path="/Login" element={<Login/>} />
-          <Route path="/Navbar" element={<Navbar/>} />
-          <Route path="/Singup" element={<Singup/>} />
-     </Routes>
+   
   
      </>
   
