@@ -38,7 +38,11 @@ const Posts = () => {
                 <h2 className="info__name">{item.post}</h2>
                 <img src={item.img} alt="img"/>
                 <h2 className="info__name">{item.date}</h2>
-
+                {item.comment.map(s => (
+         <>
+          <p className="pargraph"> Comment: {s.desc}</p>
+         </>
+        ))}
               </div>
             </div>
           );
