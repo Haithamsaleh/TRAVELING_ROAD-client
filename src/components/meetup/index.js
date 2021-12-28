@@ -6,7 +6,7 @@ import "./style.css";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const Posts = () => {
+const Meetup = () => {
   const [posts, setposts] = useState([]);
   const [title, setTitle] = useState('');
   const [Post, setPost] = useState('');
@@ -26,7 +26,7 @@ const Posts = () => {
     getPosts();
   }, []);
   const getPosts = async () => {
-    const result = await axios.get(`${BASE_URL}/posts`,{
+    const result = await axios.get(`${BASE_URL}/meetup`,{
     headers: {
         Authorization: `Bearer ${state.Login.token}`,
       },});
@@ -37,7 +37,7 @@ const Posts = () => {
       `${BASE_URL}/newPost`,
       {
         title:title,
-        post:Post,
+        desc:Post,
         img:postImg
       },
       {
@@ -125,7 +125,7 @@ const updatePost = async(id)=>{
   // useEffect(() => {
   //   data();
   // }, []);
- 
+
 
   return (
     // <section className={"cards-section"}>
@@ -242,6 +242,7 @@ const updatePost = async(id)=>{
  </>))}</div>
 
 
+
  
 
 
@@ -250,4 +251,4 @@ const updatePost = async(id)=>{
   );
 };
 
-export default Posts;
+export default Meetup;

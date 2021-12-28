@@ -52,6 +52,11 @@ li {
   float: left;
   justify-content: space-around;
 }
+.li1 {
+  float: right;
+  justify-content: space-around;
+  margin-right: 50px
+}
 
 li a {
   display: block;
