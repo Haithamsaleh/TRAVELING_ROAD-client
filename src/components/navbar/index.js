@@ -6,9 +6,23 @@ import {Link} from "react-router-dom";
 // import Navbar from './../navbar';
 // import Login from './../Login';
 // import Singup from './../Singup';
+import { useNavigate } from "react-router";
+import {useDispatch} from "react-redux";
 import logo from "./logo.png"
+import { Logoutt } from "../../reducers/Login";
+
 // import Account from './../../components/Account'
 const NavBar = () => {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const logOut =()=>{
+ 
+    dispatch(Logoutt({role:"",token:""}));
+  localStorage.clear()
+  navigate('/login')
+
+ }
   return (
 
     <>
@@ -20,14 +34,21 @@ const NavBar = () => {
 
      <li><Link to="/">home</Link></li>
      
-     <li> <Link to="/Singup">Sing up</Link></li>
      
      <li><Link to="/Posts">Posts</Link></li>
+
+     <li><Link to="/Meetup">meetup</Link></li>
+
+     <li><Link to="/Service">Service</Link></li>
      
-     <li><Link to="/Login">login</Link></li>
+     <li className="li1"><Link to="/Login">login</Link></li>
+
+     <li className="li1"> <Link to="/Singup">Sing up</Link></li>
+
      
-    
-     {/* <button className='submit1'  onClick={()=>{localStorage.removeItem("newUser")}}>logout</button> */}
+     <li className="li1"> <button  id="btnLogout"onClick={logOut}>logout</button>
+
+</li>
     
      </ul>
      </div>
