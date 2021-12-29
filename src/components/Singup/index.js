@@ -5,15 +5,37 @@ import PasswordChecklist from "react-password-checklist";
 import axios from "axios";
 import "./style.css";
 import Swal from 'sweetalert2'
+
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  Link,
+  VStack,
+  Code,
+  Grid,
+  theme,
+  Button,
+  HStack,
+  Input,
+  SimpleGrid,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  InputGroup,
+  InputRightElement,
+ } from '@chakra-ui/react';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Signup = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [show, setShow] = React.useState(false)
+  const handleClick = () => setShow(!show)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
   const state = useSelector((state) => {
     return {
       token: state.Login.token,
@@ -49,6 +71,7 @@ const Signup = () => {
   };
 
   return (
+    <ChakraProvider>
     <div className="signupWrapper">
       {state.token ? (
         <h1>
@@ -62,11 +85,14 @@ const Signup = () => {
           </div>
         </h1>
       ) : (
-        <main className="signupPanel">
+        <main >
           
-          <div className="loginDiv">
+          <Box>
+            <VStack>
             <h1>check Password:</h1>
-            <PasswordChecklist
+            <VStack>
+ <PasswordChecklist
+
               rules={[
                 "minLength",
                 "specialChar",
@@ -74,7 +100,7 @@ const Signup = () => {
                 "capital",
                 "lowercase",
               ]}
-              minLength={6}
+              minLength={8}
               value={password}
               onChange={(isValid) => {
                 if (isValid) {
@@ -85,50 +111,90 @@ const Signup = () => {
                   button.disabled = true;
                 }
               }}
-            />
-            <button id="loginButton" className="btnBK" onClick={() => navigate("/login")}>
-              or go to login
-            </button>
-          </div>
-          <div  className="signupDiv">
+            />    </VStack>
+
+                        </VStack>
+
+           
+          </Box>
+          <Box >
+          <VStack>
             <h2>Signup</h2>
-            {message ? <div className="message">{message}</div> : ""}
+            {message ? <Box >{message}</Box> : ""}
+            
             <form
-              className="signupInput"
+            
               onSubmit={(e) => {
                 e.preventDefault();
                 signup(e);
               }}
-            >
-              <input
+            >         <Box></Box> <VStack>
+
+<FormControl>
+                
+                <FormLabel htmlFor='text'>User name</FormLabel>
+                <Input id='text' type='text' onChange={(e) => setUsername(e.target.value)} />
+              </FormControl>
+              {/* <input
                 type="text"
                 placeholder="Username"
                 onChange={(e) => setUsername(e.target.value)}
                 required
-              />
-              <input
+              /> */}
+              <FormControl>
+                
+  <FormLabel htmlFor='email'>Email address</FormLabel>
+  <Input id='email' type='email' onChange={(e) => setEmail(e.target.value)} />
+  <FormHelperText>We'll never share your email.</FormHelperText>
+</FormControl>
+              {/* <input
                 type="text"
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
                 required
-              />
-              <input
+              /> */}
+              {/* <input
                 type="password"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                 required
-              />
-              <input
+              /> */}
+              <Box>
+                <FormLabel htmlFor='email'>Password</FormLabel>
+
+                  <InputGroup size='md'>
+                    
+      <Input
+        pr='4.5rem'
+        type={show ? 'text' : 'password'}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder='Enter password'
+      />
+      <InputRightElement width='4.5rem'>
+        <Button h='1.75rem' size='sm' onClick={handleClick}>
+          {show ? 'Hide' : 'Show'}
+        </Button>
+      </InputRightElement>
+    </InputGroup>
+    </Box>
+              <Button colorScheme='green'> <input
                 id="signupSubmitButton"
-                type="submit"
+                type="submit"n
                 value="Submit"
                 disabled
-              />
+              /></Button>
+                        </VStack>
+
             </form>
-          </div>
+            </VStack>
+          </Box>
         </main>
       )}
     </div>
+    <VStack><Button mt='10' mb='10' colorScheme='blue' onClick={() => navigate("/login")}>
+              or go to login
+            </Button> </VStack>
+    </ChakraProvider>
   );
 };
 
