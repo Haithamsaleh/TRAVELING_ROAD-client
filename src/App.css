@@ -40,7 +40,7 @@
   }
 }
 
-ul {
+.nav {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -48,7 +48,7 @@ ul {
   background-color: #333;
 }
 
-li {
+.li2 {
   float: left;
   justify-content: space-around;
 }

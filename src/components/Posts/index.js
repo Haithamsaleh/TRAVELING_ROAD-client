@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 import { useSelector, useDispatch} from "react-redux";
+import { Logoutt } from "../../reducers/Login";
 
 import "./style.css";
 
@@ -13,7 +15,9 @@ const Posts = () => {
   const [postImg, setPostImg] = useState('');
   const [newcomment, setNewComment] = useState('');
   const [local,setLocal]= useState("");
+  const navigate = useNavigate();
 
+  const dispatch = useDispatch();
   const state = useSelector((state)=>{
     return state
   })
@@ -36,7 +40,7 @@ const Posts = () => {
     await axios.post(
       `${BASE_URL}/newPost`,
       {
-        title:title,
+        titel:title,
         post:Post,
         img:postImg
       },
@@ -67,25 +71,8 @@ const updatePost = async(id)=>{
     getPosts(local);
   }
 
-  const updatePostimg = async(id)=>{
-
- 
-    await axios.put(
-        `${BASE_URL}/updateimg/${id}`,
-        {
-          img: postImg,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${state.Login.token}`,
-          }
-        }
-      );
-      getPosts(local);
-    }
-
   const deletePost =async(id)=>{
-     const res = await axios.delete(`${BASE_URL}/deletebyuser/${id}`, {
+     const res = await axios.delete(`${BASE_URL}/delete/${id}`, {
           headers: {
             Authorization: `Bearer ${state.Login.token}`,
           },
@@ -125,6 +112,13 @@ const updatePost = async(id)=>{
   // useEffect(() => {
   //   data();
   // }, []);
+  const logOut =()=>{
+ 
+    dispatch(Logoutt({role:"",token:""}));
+  localStorage.clear()
+  navigate('/login')
+
+ }
  
 
   return (
@@ -153,9 +147,9 @@ const updatePost = async(id)=>{
     //     })}
     //   </div>
     // </section>
-    <div className="cards">
+    <div className="mainDivv">
     
-    <div className="info__name" >
+    <div className="newPostDiv" >
          <input
            className="addInput"
            onChange={(e) => setPost(e.target.value)}
@@ -170,10 +164,11 @@ const updatePost = async(id)=>{
            Add
          </button>
        </div>
-<div className="cards-container"> 
+<div className="list"> 
  {posts.map((item, i) => (<>
    <div>
     <h1>{item.titel}</h1> 
+    {console.log(item)}
     <h1>{item.post}</h1> 
 
    <ul>
@@ -189,17 +184,6 @@ const updatePost = async(id)=>{
                    Edit post
                  </button>
                  </div>
-                 <div className="box">   
-     <input id="btubdat"onChange={(e)=>{setPost(e.target.value)}} placeholder="edit post "/>
-     
-     <button
-                   className="edit"
-                   onClick={() => updatePostimg(item._id)}
-                 >
-                   Edit img
-                 </button>
-                 </div>
-
      <li key={`img-${item._id}`}>
        <img src={item.img} alt="postPic" width="300"/></li>
      <div>
@@ -216,9 +200,9 @@ const updatePost = async(id)=>{
      {/* {console.log(l.id)} */}
     </>  ))}
                  {item.comment.map(s => (
-    <div className="pargraph">
+    <>
      <p> Comment: {s.desc}</p>
-    </div>
+    </>
 
    ))}
     
@@ -240,6 +224,9 @@ const updatePost = async(id)=>{
              </button>
    </div>
  </>))}</div>
+<div className="logoutDiv">
+ <button  id="btnLogout"onClick={logOut}>logout</button>
+</div>
 
 
  

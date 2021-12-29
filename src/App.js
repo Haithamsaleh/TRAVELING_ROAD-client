@@ -11,13 +11,14 @@ import Posts from './components/Posts'
 import Reset from './components/Reset'
 import Meetup from './components/meetup'
 import Service from './components/Service';
+import PostsList from './components/postlist'
 function App() {
   return (
 <><Navbar />
 
 <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/Posts" element={<Posts/>} />
+          <Route path="/Posts" element={<PostsList/>} />
           <Route path="/Meetup" element={<Meetup/>} />
           <Route path="/Service" element={<Service/>} />
           <Route path="/Login" element={<Login/>} />
@@ -30,7 +31,8 @@ function App() {
 </div>
 <div>
   </div>
-  <Footer /></>
+  <Footer />
+  </>
 )
 
 }
