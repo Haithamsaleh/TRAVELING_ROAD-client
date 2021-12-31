@@ -1,8 +1,44 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
-import "./style.css";
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  VStack,
+  Code,
+  Grid,
+  theme,
+  Button,
+  HStack,
+  Input,
+  SimpleGrid,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  InputGroup,
+  InputRightElement,
+  Center,
+  Square,
+  Circle,
+  Heading,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Textarea,
+  Select,
+  InputRightAddon,
+  InputLeftAddon,
+  Stack,
+} from "@chakra-ui/react";
+// import "./style.css";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -66,45 +102,47 @@ const PostsList = () => {
   // }, []);
 
   return (
-  
-    <div className="cards">
-      <div className="info__name">
-       
+    <ChakraProvider>
+      <Button onClick={addPost}>Add</Button>
+      {posts.map((item, i) => (
+        <>
+          <Link to={`/post/${item._id}`}>
+            {/* {console.log("id=   " + item._id)} */}
 
-        <button className="addBtn" onClick={addPost}>
-          Add
-        </button>
-      </div>
-      <div>
-        {posts.map((item, i) => (
-          <>
-            <div className="cards" >
+            <Box
+              w="60%"
+              mt="10"
+              mb="10"
+              ml="10"
+              boxShadow="outline"
+              p="6"
+              rounded="md"
+              bg="#ffff"
+              _hover={{ boxShadow: "inner" }}
+            >
               <h1>{item.titel}</h1>
               <h1>{item.date}</h1>
-              {console.log(item)}
-            
-            <div>
-              <div>
-                {item.like.map((l) => (
-                  <>
-                    <h1> likes: {l._id}</h1>
-                  </>
-                ))}
-              </div>
+              {/* {console.log(item)} */}
 
-              <div>
-                {item.userId.map((u) => (
-                  <>
-                    <h1> By: {u.username}</h1>
-                  </>
-                ))}
-              </div>
-            </div>
-            </div>
-          </>
-        ))}
-      </div>
-    </div>
+              {item.like.map((l) => (
+                <>
+                  <h1> likes: {l._id}</h1>
+                  <h1> by: {l.userId}</h1>
+                  {console.log(l.userId)}
+
+                </>
+              ))}
+
+              {item.userId.map((u) => (
+                <>
+                  <h1> By: {u.username}</h1>
+                </>
+              ))}
+            </Box>
+          </Link>
+        </>
+      ))}
+    </ChakraProvider>
   );
 };
 

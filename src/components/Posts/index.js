@@ -1,91 +1,84 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
-import { useSelector, useDispatch} from "react-redux";
-import { Logoutt } from "../../reducers/Login";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router";
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  VStack,
+  Code,
+  Grid,
+  theme,
+  Button,
+  HStack,
+  Input,
+  SimpleGrid,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  InputGroup,
+  InputRightElement,
+  Center,
+  Square,
+  Circle,
+  Heading,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Textarea,
+  Select,
+  InputRightAddon,
+  InputLeftAddon,
+  Stack,
+  Image,
+} from "@chakra-ui/react";
+import { PhoneIcon, AddIcon, WarningIcon ,ChatIcon,Icon } from '@chakra-ui/icons'
 
 import "./style.css";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Posts = () => {
-  const [posts, setposts] = useState([]);
-  const [title, setTitle] = useState('');
-  const [Post, setPost] = useState('');
-  const [postImg, setPostImg] = useState('');
+  const { id } = useParams();
+  const [Post, setPost] = useState("");
   const [newcomment, setNewComment] = useState('');
-  const [local,setLocal]= useState("");
-  const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-  const state = useSelector((state)=>{
-    return state
-  })
-  useEffect(() => {
-    getPosts();
-  }, []);
+  const postId = [];
+
+  const state = useSelector((state) => {
+    return state;
+  });
+  
   useEffect(() => {
     const getToken = localStorage.getItem("token");
-    setLocal(getToken);
-    getPosts();
+    getPost(id);
   }, []);
-  const getPosts = async () => {
-    const result = await axios.get(`${BASE_URL}/posts`,{
-    headers: {
-        Authorization: `Bearer ${state.Login.token}`,
-      },});
-      setposts(result.data);
+  const getPost = async (id) => {
+    try {
+      const result = await axios.get(`${BASE_URL}/post/${id}`);
+
+      setPost(result.data);
+
+      // console.log(result.data,"<<<<<<<<<<");
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const addPost = async () => {
-    await axios.post(
-      `${BASE_URL}/newPost`,
-      {
-        titel:title,
-        post:Post,
-        img:postImg
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${state.Login.token}`,
-        },
-      }
-    );
-  
-    getPosts(local);
-};
-
-const updatePost = async(id)=>{
-
- 
-  await axios.put(
-      `${BASE_URL}/updatepost/${id}`,
-      {
-        post: Post,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${state.Login.token}`,
-        }
-      }
-    );
-    getPosts(local);
-  }
-
-  const deletePost =async(id)=>{
-     const res = await axios.delete(`${BASE_URL}/delete/${id}`, {
-          headers: {
-            Authorization: `Bearer ${state.Login.token}`,
-          },
-        })
-        getPosts();
-  }
   const addcomment = async (postId) => {
     try {
       const res = await axios.post(
         `${BASE_URL}/newcomment`,
         {
           desc: newcomment,
-          postId: postId,
+          postId:postId
+        ,
         },
         {
           headers: {
@@ -93,147 +86,97 @@ const updatePost = async(id)=>{
           },
         }
       );
-      getPosts();
+      getPost(id);
     } catch (error) {
       console.log(error);
     }
   };
-  // const data = async () => {
-  //   // eslint-disable-next-line
-  //   const posts = await axios
-  //     .get(`${BASE_URL}/posts`)
-  //     .then((dete) => {
-  //       setposts(dete.data);
+  const addlike = async (postId) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/newlike`,
+        {
+          postId:postId
+        ,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${state.Login.token}`,
+          },
+        }
+      );
+      getPost(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
-  //       console.log(dete.data);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   data();
-  // }, []);
-  const logOut =()=>{
- 
-    dispatch(Logoutt({role:"",token:""}));
-  localStorage.clear()
-  navigate('/login')
-
- }
+  
  
 
   return (
-    // <section className={"cards-section"}>
-    //   <div className="info__name"><h1>POSTS</h1>
-    //   </div>
-    //   <div className="cards-container">
-    //     {posts.map((item) => {
-    //       return (
-            
-    //         <div className="card">
-    //         <div className="books">
-    //             <h1 className="info__name">{item.title}</h1> 
-
-    //             <h2 className="info__name">{item.post}</h2>
-    //             <img src={item.img} alt="img"/>
-    //             <h2 className="info__name">{item.date}</h2>
-    //             {item.comment.map(s => (
-    //      <>
-    //       <p className="pargraph"> Comment: {s.desc}</p>
-    //      </>
-    //     ))}
-    //           </div>
-    //         </div>
-    //       );
-    //     })}
-    //   </div>
-    // </section>
+  <ChakraProvider>
     <div className="mainDivv">
+      {/* {console.log(Post.titel)} */}
     
-    <div className="newPostDiv" >
-         <input
-           className="addInput"
-           onChange={(e) => setPost(e.target.value)}
-           placeholder="new post Desc"
-         />
-         <input
-           className="addInput"
-           onChange={(e) => setPostImg(e.target.value)}
-           placeholder="new Post Img"
-         />
-         <button className="addBtn" onClick={addPost}>
-           Add
-         </button>
-       </div>
-<div className="list"> 
- {posts.map((item, i) => (<>
-   <div>
-    <h1>{item.titel}</h1> 
-    {console.log(item)}
-    <h1>{item.post}</h1> 
+      <div className="list">
+        {" "}
+        <Box  boxShadow='dark-lg' borderWidth='1px' borderRadius='lg' overflow='hidden' ml="20px" w="90%">
 
-   <ul>
-     <div className="photo">
-</div>      
-<div className="box">   
-     <input id="btubdat"onChange={(e)=>{setPost(e.target.value)}} placeholder="edit post "/>
-     
-     <button
-                   className="edit"
-                   onClick={() => updatePost(item._id)}
-                 >
-                   Edit post
-                 </button>
-                 </div>
-     <li key={`img-${item._id}`}>
-       <img src={item.img} alt="postPic" width="300"/></li>
-     <div>
-                 
-                 <button
-                   className="delete"
-                   onClick={() => {deletePost(item._id)}}
-                 >
-                   Delete
-                 </button>
-                                {item.like.map(l => (
+        <Text fontSize='6xl'>{Post.titel}</Text>
+        <Text fontSize='4xl'>{Post.post}</Text>
+        <Image
+    boxSize='100px'
+    objectFit='cover'
+    src='{Post.img}'
+    alt='Dan Abramov'
+  />
+</Box>
+
+{console.log(Post,"<=======")}
+      {Post && Post.comment.map(s => (
     <>
-     <h1> 0000000000000000000000likes: {l._id}</h1>
-     {/* {console.log(l.id)} */}
-    </>  ))}
-                 {item.comment.map(s => (
-    <>
-     <p> Comment: {s.desc}</p>
+    <Box mt="100px"></Box>
+    <Box ml="20px" w="1000px" boxShadow='outline' p='6' rounded='md' bg='white'>
+    {s.desc}
+    <p> by: {s.userid}</p>
+
+  </Box>
+  
+     {/* <p> Comment: {s.desc}</p> */}
     </>
 
    ))}
-    
+    {Post && Post.like.map(l => (
+    <>
+     <p> like: {l._id}</p>
+     <p> by: {l.userid}</p>
+     <h1> by: {l.userId}</h1>
+                  {console.log(l)}
 
- 
-   
-               </div>
-               
-   </ul>
-   <input
-               className="commentInput"
-               onChange={e => {
+    </>
+
+   ))}
+     <Input placeholder='large size' size='lg'  onChange={e => {
                  setNewComment(e.target.value);
-               }}
-               placeholder="add comment"
-             />
-             <button className="addBTN" onClick={()=> addcomment(item._id)}>
+               }}/>
+
+             
+              <Button colorScheme='teal' variant='solid' onClick={()=>{addcomment(Post._id)}}>  <Icon as={ChatIcon} mr="10px" />
+
+      post Comment
+  </Button>
+             {/* <button className="addBTN" onClick={()=>{addcomment(Post._id)}}>
                add
+             </button> */}
+             <br/>
+             <button className="addBTN" onClick={()=>{addlike(Post._id)}}>
+               like
              </button>
-   </div>
- </>))}</div>
-<div className="logoutDiv">
- <button  id="btnLogout"onClick={logOut}>logout</button>
-</div>
-
-
- 
-
-
-
-</div>
+      </div>
+    </div>
+    </ChakraProvider>
   );
 };
 

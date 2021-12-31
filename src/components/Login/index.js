@@ -5,7 +5,29 @@ import axios from "axios";
 import { Loginn } from "./../../reducers/Login";
 import Swal from 'sweetalert2';
 import withReactContent from "sweetalert2-react-content";
-import "./style.css";
+// import "./style.css";
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  Link,
+  VStack,
+  Code,
+  Grid,
+  Heading,
+  theme,
+  Button,
+  HStack,
+  Input,
+  SimpleGrid,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  InputGroup,
+  InputRightElement,
+ } from '@chakra-ui/react';
+
 const MySwal = withReactContent(Swal);
 // eslint-disable-next-line
 const popupTools = require("popup-tools");
@@ -16,6 +38,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const [emilOrUserName, setEmilOrUserName] = useState("");
   // const [userName, setUserName] = useState("");
+  const [show, setShow] = React.useState(false)
+  const handleClick = () => setShow(!show)
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
@@ -31,7 +55,7 @@ const Login = () => {
       const res = await axios.post(`${BASE_URL}/login`, {
         email: emilOrUserName,
         password,
-        userName: emilOrUserName,
+        username: emilOrUserName,
       });
       console.log(res.data.result.role);
       dispatch(Loginn({ role: res.data.result.role, token: res.data.token }));
@@ -71,6 +95,7 @@ const Login = () => {
         MySwal.fire({
           icon: "success",
           text: "Check your email to reset the password",
+          text :"general kenobi",
           confirmButtonColor: "black",
         });
       } catch (error) {
@@ -105,6 +130,8 @@ const Login = () => {
   // };
 
   return (
+    <ChakraProvider>
+
     <div className="loginWrapper">
       {state.token ? (
         <>
@@ -118,29 +145,59 @@ const Login = () => {
           </div>
         </>
       ) : (
-        <main className="panel">
-          <div>
-            <h2>Login</h2>
-            {message ? <div className="message">{message}</div> : ""}
-            <form
-              className="input"
-              onSubmit={(e) => {
-                e.preventDefault();
-                login(e);
-              }}
-            >
-              <input
+        <main >
+          <VStack>
+           <Heading isTruncated>Login</Heading>
+
+             {message ? <Box >{message}</Box> : ""}
+              <form
+               className="input"
+               onSubmit={(e) => {
+                 e.preventDefault();
+                 login(e);
+               }}
+              >   <Box></Box> <VStack>
+
+              <FormControl>
+                              
+                              <FormLabel htmlFor='text'>User name</FormLabel>
+                              <Input id='text' type='text' onChange={(e) => setEmilOrUserName(e.target.value)} required />
+                            </FormControl>
+                            </VStack>
+            
+              
+              {/* <input
                 type="text"
                 placeholder="Email/Username"
                 onChange={(e) => setEmilOrUserName(e.target.value)}
                 required
-              />
-              <input
+              /> */}
+
+<Box>
+                <FormLabel htmlFor='email'>Password</FormLabel>
+
+                  <InputGroup size='md'>
+                    
+      <Input
+        pr='4.5rem'
+        type={show ? 'text' : 'password'}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder='Enter password'
+      />
+      <InputRightElement width='4.5rem'>
+        <Button h='1.75rem' size='sm' onClick={handleClick}>
+          {show ? 'Hide' : 'Show'}
+        </Button>
+      </InputRightElement>
+    </InputGroup>
+    </Box>
+              {/* <input
                 type="password"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <input id="submitButton" type="submit" value="Submit" /> */}
               <input id="submitButton" type="submit" value="Submit" />
             </form>
             {/* <button
@@ -150,25 +207,37 @@ const Login = () => {
             >
               Or Login with Google
             </button> */}
-          </div>
-          <div className="signUpDiv">
-            <h2 className="gotosignUp">Hello, friend!</h2>
+           <div className="signUpDiv">
+           <Heading isTruncated>Hello there</Heading>
             
-              <h1 className="forgotPassword" onClick={forgotPassword}>
-                forgot your password?
-              </h1>
-              <input id="submitButton" type="submit" value="Submit" />
-            <button
+            <Button colorScheme='blue' onClick={forgotPassword}>
+            forgot your password?
+            </Button>
+              {/* <h1 className="forgotPassword" onClick={forgotPassword}>
+              forgot your password?
+
+              </h1> */}
+              
+              
+            
+              
+            {/* <button
               className="gotosignUp"
               id="signupButton"
               onClick={() => navigate("/Singup")}
             >
               Sign up
-            </button>
+            </button> */}
+            <VStack><Button mt='5' mb='5' colorScheme='blue' onClick={() => navigate("/Singup")}>
+            Sign up
+            </Button> </VStack>
           </div>
+          </VStack>
         </main>
       )}
     </div>
+    </ChakraProvider>
+
   );
 };
 
