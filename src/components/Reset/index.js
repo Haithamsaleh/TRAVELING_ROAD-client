@@ -5,6 +5,42 @@ import withReactContent from "sweetalert2-react-content";
 import ReactCodeInput from "react-verification-code-input";
 import axios from "axios";
 import PasswordChecklist from "react-password-checklist";
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  VStack,
+  Code,
+  Grid,
+  theme,
+  Button,
+  HStack,
+  Input,
+  SimpleGrid,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  InputGroup,
+  InputRightElement,
+  Center,
+  Square,
+  Circle,
+  Heading,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Textarea,
+  Select,
+  InputRightAddon,
+  InputLeftAddon,
+  Stack,
+} from "@chakra-ui/react";
 // import "./style.css";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -14,6 +50,8 @@ const Reset = () => {
   const { id } = useParams();
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
+  const [show, setShow] = React.useState(false)
+  const handleClick = () => setShow(!show)
 
   const resetPass = async () => {
     if (code.length > 0) {
@@ -46,10 +84,15 @@ const Reset = () => {
     }
   };
   return (
-      <>
+    <ChakraProvider>
+
+    
     <div className="resetPasswordWrapper">
     <div className="resetPasswordBox">
-      <h1>Reset Your Password</h1>
+    <VStack>
+
+    <Heading isTruncated>Reset Your Password</Heading>
+    
       <PasswordChecklist
         rules={[
           "minLength",
@@ -72,21 +115,38 @@ const Reset = () => {
       />
        <ReactCodeInput fields={4} onComplete={(val) => setCode(val)} />
        <br/>
-      <input
-        type="password"
-        placeholder="Password"
-        className="resetPassword"
+       <InputGroup size='md'>
+
+       <Input
+        pr='4.5rem'
+        type={show ? 'text' : 'password'}
         onChange={(e) => setPassword(e.target.value)}
-        required
+        placeholder='Enter password'
       />
+      <InputRightElement width='4.5rem'>
+        <Button h='1.75rem' size='sm' onClick={handleClick}>
+          {show ? 'Hide' : 'Show'}
+        </Button>
+      </InputRightElement>
+    </InputGroup>
+
+         {/* <InputRightElement width='4.5rem'>
+        <Button h='1.75rem' size='sm' onClick={handleClick}>
+          {show ? 'Hide' : 'Show'}
+        </Button>
+      </InputRightElement> */}
       {/* <ReactCodeInput fields={4} onComplete={(val) => setCode(val)} /> */}
       <br/>
-      <button id="resetPasswordButton" onClick={resetPass}>
+      <Button colorScheme='blue' id="resetPasswordButton" onClick={resetPass}>
         Reset
-      </button>
+      </Button>
+      </VStack>
+
     </div>
   </div>
-</>
+
+</ChakraProvider>
+
 );
 };
 export default Reset;

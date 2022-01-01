@@ -37,6 +37,10 @@ import {
   InputRightAddon,
   InputLeftAddon,
   Stack,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 // import "./style.css";
 
@@ -103,6 +107,7 @@ const PostsList = () => {
 
   return (
     <ChakraProvider>
+  
       <Button onClick={addPost}>Add</Button>
       {posts.map((item, i) => (
         <>

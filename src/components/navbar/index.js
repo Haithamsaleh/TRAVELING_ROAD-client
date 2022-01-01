@@ -50,6 +50,10 @@ import {
   Select,
   InputRightAddon,
   InputLeftAddon,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
   Stack,
 } from "@chakra-ui/react";
 import withReactContent from "sweetalert2-react-content";
@@ -87,20 +91,44 @@ const NavBar = () => {
 
   const dispatch = useDispatch();
   const logOut = () => {
+
+   
     dispatch(Logoutt({ role: "", token: "" }));
+   
     localStorage.clear();
+    <Alert
+    status='success'
+    variant='subtle'
+    flexDirection='column'
+    alignItems='center'
+    justifyContent='center'
+    textAlign='center'
+    height='200px'
+  >
+    <AlertIcon boxSize='40px' mr={0} />
+    <AlertTitle mt={4} mb={1} fontSize='lg'>
+      Application submitted!
+    </AlertTitle>
+    <AlertDescription maxWidth='sm'>
+      Thanks for submitting your application. Our team will get back to you soon.
+    </AlertDescription>
+  </Alert>
     navigate("/");
+  
+   
   };
   const login = async () => {
     setMessage("");
     try {
       const res = await axios.post(`${BASE_URL}/login`, {
         email: emilOrUserName,
-        password:passwordd,
+        password: passwordd,
         username: emilOrUserName,
       });
       console.log(res.data.result.role);
       dispatch(Loginn({ role: res.data.result.role, token: res.data.token }));
+     
+     
       Swal.fire({
         position: "center",
         icon: "success",
@@ -152,12 +180,13 @@ const NavBar = () => {
 
   const signup = async () => {
     setMessage("");
-    const res = await axios.post(`${BASE_URL}signUp`, {
+     try {
+    const res = await axios.post(`${BASE_URL}/signup`, {
       username: username,
       email: email,
       password: password,
     });
-    try {
+   
       Swal.fire({
         position: "center",
         icon: "success",
@@ -165,19 +194,21 @@ const NavBar = () => {
         showConfirmButton: true,
         timer: 1500,
       });
-      navigate("/login");
-    } catch {
-      setMessage(res.data.message);
+      navigate("/");
+    } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "make sure the email & the password are correct",
         footer: '<a href="">Why do I have this issue?</a>',
       });
+      setMessage(error.response.data.message);
+
     }
   };
   return (
     <ChakraProvider>
+ 
       <>
         <div className="container">
           <ul className="nav">
@@ -201,36 +232,36 @@ const NavBar = () => {
               <Link to="/Service">Service</Link>
             </li>
 
-           
 
+
+            
             <li className="li1">
               {" "}
               <Button mt="3" colorScheme="red" onClick={logOut}>
                 logout
               </Button>
-            
+              
             </li>
             <li className="li1">
               {" "}
-              <Button mt='3' colorScheme="blue" onClick={onOpen}>
-              Sign up
+              <Button mt="3" colorScheme="blue" onClick={onOpen}>
+                Sign up
               </Button>
-              </li>
-              <li className="li1">
+            </li>
+            <li className="li1">
               {" "}
-              <Button  mt='3' colorScheme="blue" onClick={onOpenReportModal}>
-login
+              <Button mt="3" colorScheme="blue" onClick={onOpenReportModal}>
+                login
               </Button>
-              </li>
-            </ul>
+            </li>
+          </ul>
         </div>
-        </>
-       
-      
+      </>
 
+      {/* Sign up */}
       <Box>
+      {message1 ? <Box>{message1}</Box> : ""}{" "}
 
-      
         <Drawer
           isOpen={isOpen}
           placement="right"
@@ -240,9 +271,7 @@ login
           <DrawerOverlay />
           <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader borderBottomWidth="1px">
-              Create a new account
-            </DrawerHeader>
+            <DrawerHeader borderBottomWidth="1px">Sign in </DrawerHeader>
 
             <DrawerBody>
               <Stack spacing="24px">
@@ -317,9 +346,17 @@ login
               <Button variant="outline" mr={3} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="blue">
-                Submit
-                <input id="signupSubmitButton" type="submit" value="Submit" />
+              <Button
+                id="signupSubmitButton"
+                colorScheme="blue"
+                onClick={(e) => {
+                  e.preventDefault();
+                  signup(e);
+                }}
+              >
+                {" "}
+                Sign Up
+                
               </Button>
             </DrawerFooter>
           </DrawerContent>
@@ -329,17 +366,13 @@ login
         <VStack></VStack>
       </Box>
       <Box>
-          {message1 ? <Box>{message1}</Box> : ""}
-
-         
-            {" "}
-            <VStack>
-              <Box>
-                <InputGroup size="md"></InputGroup>
-              </Box>
-            </VStack>
+        <VStack>
+          <Box>
+            <InputGroup size="md"></InputGroup>
+          </Box>
+        </VStack>
       </Box>
-      {/* ////////////////////////////////////// */}
+      {/* login */}
       <Box>
         {message ? { message } : ""}
 
@@ -414,15 +447,14 @@ login
       <Box>
         <VStack>
           <VStack>
-          
             <Box>
               <InputGroup size="md"></InputGroup>
             </Box>
           </VStack>
         </VStack>
       </Box>
+      
     </ChakraProvider>
-    
   );
 };
 

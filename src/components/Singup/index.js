@@ -64,13 +64,14 @@ const Signup = () => {
 
   const signup = async () => {
     setMessage("");
-    const res = await axios.post(`${BASE_URL}signUp`, {
+    
+    const res = await axios.post(`${BASE_URL}/signUp`, {
       username: username,
       email: email,
       password: password,
       
     });
-    if (res.status === 201) {
+    try { 
       Swal.fire({
           position: 'center',
           icon: 'success',
@@ -79,7 +80,7 @@ const Signup = () => {
           timer: 1500
         })
       navigate("/login");
-    } else {
+    } catch {
       setMessage(res.data.message);
         Swal.fire({
         icon: 'error',
@@ -95,7 +96,6 @@ const Signup = () => {
 
   
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     <div className="signupWrapper">
       {state.token ? (
         <h1>
@@ -305,9 +305,9 @@ const Signup = () => {
         </main>
       )}
     </div>
-    <VStack> <Button mt='10' mb='10' colorScheme='blue' onClick={() => navigate("/login")}>
+    {/* <VStack> <Button mt='10' mb='10' colorScheme='blue' onClick={() => navigate("/login")}>
               or go to login
-            </Button> </VStack>
+            </Button> </VStack> */}
             </ChakraProvider>
   );
 };

@@ -4,6 +4,42 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ReactCodeInput from "react-verification-code-input";
 import axios from "axios";
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  VStack,
+  Code,
+  Grid,
+  theme,
+  Button,
+  HStack,
+  Input,
+  SimpleGrid,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  InputGroup,
+  InputRightElement,
+  Center,
+  Square,
+  Circle,
+  Heading,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Textarea,
+  Select,
+  InputRightAddon,
+  InputLeftAddon,
+  Stack,
+} from "@chakra-ui/react";
 // import "./style.css";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -42,15 +78,24 @@ const Account = () => {
     }
   };
   return (
-    <>
+    <ChakraProvider>
+    
       <div className="verifyAccountWrapper" >
         <div className="verifyAccountBox">
-          <h1>Verify Your Account</h1>
+        <VStack>
+
+
+        <Heading mb='10' isTruncated> Verify Your Account</Heading>
+          
           <ReactCodeInput fields={4} onComplete={(val) => setCode(val)} />
-          <button onClick={verifyAccount}>Verify</button>
+         <br/>
+          <Button  mt='10' colorScheme="blue" onClick={verifyAccount}>Verify</Button>
+          </VStack>
+
         </div>
       </div>
-    </>
+
+    </ChakraProvider>
   );
 };
 export default Account;
