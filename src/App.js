@@ -12,6 +12,7 @@ import Reset from './components/Reset'
 import Meetup from './components/meetup'
 import Service from './components/Service';
 import PostsList from './components/postlist'
+import MeetsupList from './components/meetuplist'
 function App() {
   return (
 <><Navbar />
@@ -21,7 +22,7 @@ function App() {
           <Route path="/Posts" element={<PostsList/>} />
           <Route path="/post/:id" element={<Posts/>} />
 
-          <Route path="/Meetup" element={<Meetup/>} />
+          <Route path="/meetup" element={<MeetsupList/>} />
           <Route path="/Service" element={<Service/>} />
           <Route path="/Login" element={<Login/>} />
           <Route path="/Navbar" element={<Navbar/>} />
