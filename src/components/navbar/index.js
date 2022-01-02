@@ -11,10 +11,9 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Loginn } from "./../../reducers/Login";
-
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import logo from "./logo.gif";
+import logo from "./logo.jpg";
 import { Logoutt } from "../../reducers/Login";
 import {
   ChakraProvider,
@@ -125,7 +124,6 @@ const NavBar = () => {
         password: passwordd,
         username: emilOrUserName,
       });
-      console.log(res.data.result.role);
       dispatch(Loginn({ role: res.data.result.role, token: res.data.token }));
      
      
@@ -136,7 +134,7 @@ const NavBar = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      navigate("/");
+      navigate("/posts");
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -206,6 +204,15 @@ const NavBar = () => {
 
     }
   };
+
+  // useEffect(() => {
+  //   console.log(state);
+  //   if (state.Login.token) {
+  //     setLogedin(true);
+  //   } else {
+  //     setLogedin(false);
+  //   }
+  // }, [state]);
   return (
     <ChakraProvider>
  
@@ -213,7 +220,7 @@ const NavBar = () => {
         <div className="container">
           <ul className="nav">
             <li className="li2">
-              <img src={logo} alt="error" width={50} height={50} />
+              <img src={logo} alt="error" width={100} height={100} />
             </li>
 
             <li className="li2">
@@ -256,6 +263,10 @@ const NavBar = () => {
             </li>
           </ul>
         </div>
+        <Alert status='warning'>
+    <AlertIcon />
+    The website is currently in beta v.0.5
+  </Alert>
       </>
 
       {/* Sign up */}

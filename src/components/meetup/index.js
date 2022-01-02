@@ -252,3 +252,4 @@ const updatePost = async(id)=>{
 };
 
 export default Meetup;
+
