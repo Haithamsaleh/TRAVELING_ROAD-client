@@ -50,69 +50,50 @@ import {
 } from "@chakra-ui/react";
 import { BsSuitHeartFill } from "react-icons/bs";
 import { FaHeart,FaComment } from "react-icons/fa";
+import Posts from "../Posts";
 
 // import "./style.css";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const PostsList = () => {
-  const [posts, setposts] = useState([]);
+const ServicesList = () => {
+  const [meetsup, setmeetsup] = useState([]);
   const [title, setTitle] = useState("");
   const [Post, setPost] = useState("");
   const [postImg, setPostImg] = useState("");
   const [local, setLocal] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [message, setMessage] = useState("");
-  const [logedin, setLogedin] = useState(false);
-
   const firstField = React.useRef();
   const navigate = useNavigate();
 
   const state = useSelector((state) => {
-    return{
-       state,
-      token: state.Login.token,
-
-    }
+    return state;
   });
   useEffect(() => {
-    if (state.token) {
-      setLogedin(true);
-      const getToken = localStorage.getItem("token");
+    getPosts();
+  }, []);
+  useEffect(() => {
+    const getToken = localStorage.getItem("token");
     setLocal(getToken);
     getPosts();
-    } else {
-      setLogedin(false);
-      const getToken = localStorage.getItem("token");
-    setLocal(getToken);
-    getPosts();
-    }
-  }, [state]);
-
-  // useEffect(() => {
-  //   getPosts();
-  // }, []);
-  // useEffect(() => {
-  //   const getToken = localStorage.getItem("token");
-  //   setLocal(getToken);
-  //   getPosts();
-  // }, []);
+  }, []);
   const getPosts = async () => {
-    const result = await axios.get(`${BASE_URL}/posts`, {
+    const result = await axios.get(`${BASE_URL}/service`, {
       headers: {
-        Authorization: `Bearer ${state.token}`,
+        Authorization: `Bearer ${state.Login.token}`,
       },
     });
-    setposts(result.data);
+    setmeetsup(result.data);
   };
   const addPost = async () => {
     try{
     await axios.post(
-      `${BASE_URL}/newPost`,
+      `${BASE_URL}/newservice`,
       {
         
         titel: title,
-        post: Post,
+        desc: Post,
         img: postImg,
       },
       {
@@ -160,17 +141,14 @@ const PostsList = () => {
 
   return (
     <ChakraProvider>
-                  {!logedin ? (<p></p>
-                  ):(
-
       <Button ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
         new post
       </Button>
-                  )}
 
-      {posts.map((item, i) => (
+      {meetsup.map((item, i) => (
         <>
-          <Link to={`/post/${item._id}`}>
+        {console.log(meetsup)}
+          <Link to={`/service/${item._id}`}>
             
 
         
@@ -207,7 +185,7 @@ const PostsList = () => {
               <Text fontSize="6xl">{item.titel}</Text>
 
               {/* {console.log(item)} */}
-<HStack>
+             <HStack>
           
               <FaHeart/> <p>{item.like.length}</p>
 
@@ -222,7 +200,8 @@ const PostsList = () => {
 
           </Link>
         </>
-      ))}
+      )
+      )}
 
       <Box>
         {message ? <Box>{message}</Box> : ""}{" "}
@@ -304,4 +283,4 @@ const PostsList = () => {
   );
 };
 
-export default PostsList;
+export default ServicesList;

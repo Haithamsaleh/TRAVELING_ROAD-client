@@ -68,16 +68,27 @@ const Posts = () => {
   const { id } = useParams();
   const [Post, setPost] = useState("");
   const [newcomment, setNewComment] = useState("");
-
+  const [logedin, setLogedin] = useState(false);
+const [comments, setComments] = useState("");
   const postId = [];
 
   const state = useSelector((state) => {
-    return state;
+    return {
+      token: state.Login.token,
+    };
   });
+  useEffect(() => {
+    if (state.token) {
+      setLogedin(true);
+    } else {
+      setLogedin(false);
+    }
+  }, [state]);
 
   useEffect(() => {
     const getToken = localStorage.getItem("token");
     getPost(id);
+    getcomments(id)
   }, []);
   const getPost = async (id) => {
     try {
@@ -85,11 +96,20 @@ const Posts = () => {
 
       setPost(result.data);
 
-      // console.log(result.data,"<<<<<<<<<<");
+      console.log(result.data,"<<<<<<<<<<");
     } catch (error) {
       console.log(error);
     }
   };
+  const getcomments = async (id) => {
+    const result = await axios.get(`${BASE_URL}/comments/${id}`); 
+   
+
+    setComments(result.data);
+    console.log(result.data,'xxxxxxxxxxxxxxxxxx');
+
+  };
+
   const addcomment = async (postId) => {
     try {
       const res = await axios.post(
@@ -100,7 +120,7 @@ const Posts = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${state.Login.token}`,
+            Authorization: `Bearer ${state.token}`,
           },
         }
       );
@@ -118,7 +138,7 @@ const Posts = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${state.Login.token}`,
+            Authorization: `Bearer ${state.token}`,
           },
         }
       );
@@ -129,9 +149,10 @@ const Posts = () => {
   };
 
   return (
+    
     <ChakraProvider>
       <Wrap>
-        {/* {console.log(Post.titel)} */}
+        {console.log(comments,'lllllllllllllllllll')}
 
         <WrapItem>
           
@@ -155,24 +176,25 @@ const Posts = () => {
                 alt="post image"
               />
                 
-
-              <Box ml='10px'>
-              <Button 
-               
-          colorScheme="red"
-          onClick={() => {
-            addlike(Post._id);
-          }}
-        >
-          like  {Post && Post.like.length}
-
+                {!logedin ? (
+                  <p></p>
+              
+        ):(<Box ml='10px'>
+        <Button 
          
-          <AiFillHeart />
-          
+    colorScheme="red"
+    onClick={() => {
+      addlike(Post._id);
+    }}
+  >
+    like  {Post && Post.like.length}
 
-        </Button>
-        </Box>
-        
+   
+    <AiFillHeart />
+    
+
+  </Button>
+  </Box>)}
             </Box>
             <Box
               mt="100"
@@ -214,6 +236,7 @@ const Posts = () => {
                       {Post &&
           Post.userId.map((I) => (
             <>
+            {console.log(Post,'<<<<<<x')}
               {I.username}
               
             </>
@@ -257,8 +280,9 @@ const Posts = () => {
                     </Text>
                     </Stack>
                </Stack>
-
-
+               {!logedin ? (
+                  <p></p>
+               ):(
                 <Button
                   w={"full"}
                   mt={8}
@@ -272,15 +296,19 @@ const Posts = () => {
                 >
                   Follow
                 </Button>
+               )}
               </Box>
             </Box>
 
             
         </WrapItem>
+        
         <Box>
-        {Post &&
-          Post.comment.map((s) => (
+          
+        { comments &&
+          comments.map((item) => (
             <>
+            {console.log(comments,'oooooooooooooooooooooooooo')}
               <Box
                               mt="40px"
 
@@ -291,13 +319,30 @@ const Posts = () => {
                 rounded="md"
                 bg="white"
               >
-                {s.desc}
-                <p> by: {s.userid}</p>
+                {console.log(item,'<><><><>')}
+                {item.desc}
+                <Box>
+                {item.userId.username}
+                </Box>
+                
+
+                {/* {
+                comments.userId.map((ss) => (
+                <>
+                            {console.log(ss,'oooooooooooooooooooooooooo')}
+
+                        <p> by: </p>
+
+                </>
+              ))} */}
+                              {console.log(Post,",,,,,,,,,,")}
               </Box>
 
               {/* <p> Comment: {s.desc}</p> */}
             </>
           ))}
+          
+          
           </Box>
       
 
@@ -308,32 +353,35 @@ const Posts = () => {
       
          
 
- 
-        <Input
-          placeholder="large size"
-          w='1000px'
-          size="lg"
-          onChange={(e) => {
-            setNewComment(e.target.value);
-          }}
-        />
-        
-
-        <Button
-        ml='10px'
-          colorScheme="teal"
-          variant="solid"
-          onClick={() => {
-            addcomment(Post._id);
-          }}
-        >
-          {" "}
-          <Icon  as={ChatIcon} mr="10px" />
-          post Comment
-        </Button>
-        
-        <br />
-        
+          {!logedin ? (
+      
+        <p></p>
+        ):(      <>
+          <Input
+            placeholder="large size"
+            w='1000px'
+            size="lg"
+            onChange={(e) => {
+              setNewComment(e.target.value);
+            }}
+          />
+          
+  
+          <Button
+          ml='10px'
+            colorScheme="teal"
+            variant="solid"
+            onClick={() => {
+              addcomment(Post._id);
+            }}
+          >
+            {" "}
+            <Icon  as={ChatIcon} mr="10px" />
+            post Comment
+          </Button>
+          
+          <br />
+          </>)}
       </Wrap>
     </ChakraProvider>
   );

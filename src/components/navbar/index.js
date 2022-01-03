@@ -1,5 +1,5 @@
 // import './App.css';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Home from "./../Home";
 import Posts from "./../Posts";
@@ -78,6 +78,7 @@ const NavBar = () => {
     onOpen: onOpenReportModal,
     onClose: onCloseReportModal,
   } = useDisclosure();
+  const [logedin, setLogedin] = useState(false);
 
   const firstField = React.useRef();
   const state = useSelector((state) => {
@@ -85,6 +86,13 @@ const NavBar = () => {
       token: state.Login.token,
     };
   });
+  useEffect(() => {
+    if (state.token) {
+      setLogedin(true);
+    } else {
+      setLogedin(false);
+    }
+  }, [state]);
 
   const navigate = useNavigate();
 
@@ -215,7 +223,6 @@ const NavBar = () => {
   // }, [state]);
   return (
     <ChakraProvider>
- 
       <>
         <div className="container">
           <ul className="nav">
@@ -241,14 +248,8 @@ const NavBar = () => {
 
 
 
-            
-            <li className="li1">
-              {" "}
-              <Button mt="3" colorScheme="red" onClick={logOut}>
-                logout
-              </Button>
-              
-            </li>
+            {!logedin ? (
+           <>
             <li className="li1">
               {" "}
               <Button mt="3" colorScheme="blue" onClick={onOpen}>
@@ -261,11 +262,21 @@ const NavBar = () => {
                 login
               </Button>
             </li>
+            </>
+            ):(
+            <li className="li1">
+              {" "}
+              <Button mt="3" colorScheme="red" onClick={logOut}>
+                logout
+              </Button>
+              
+            </li>
+            )}
           </ul>
         </div>
         <Alert status='warning'>
     <AlertIcon />
-    The website is currently in beta v.0.5
+    The website is currently in beta v.0.6
   </Alert>
       </>
 

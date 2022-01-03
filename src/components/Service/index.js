@@ -1,234 +1,342 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector, useDispatch} from "react-redux";
-import { ThemeProvider, ColorModeProvider } from "@chakra-ui/react"
-import { Button } from "@chakra-ui/react"
-import { Box,Image, forwardRef } from '@chakra-ui/react'
-import { motion, isValidMotionProp } from 'framer-motion'
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router";
+import travel from "../Home/travel.jpg";
+import Swal from "sweetalert2";
+
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  VStack,
+  Code,
+  Grid,
+  theme,
+  Button,
+  HStack,
+  Input,
+  SimpleGrid,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  InputGroup,
+  InputRightElement,
+  Center,
+  Square,
+  Circle,
+  Heading,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Textarea,
+  Select,
+  InputRightAddon,
+  InputLeftAddon,
+  Stack,
+  Image,
+  Badge,
+  Avatar,
+  AvatarBadge,
+  AvatarGroup,
+  WrapItem,
+  GridItem,
+  Flex,
+  Wrap,
+} from "@chakra-ui/react";
+import { AiFillHeart } from "react-icons/ai";
+
+import {
+  PhoneIcon,
+  AddIcon,
+  WarningIcon,
+  ChatIcon,
+  Icon,
+} from "@chakra-ui/icons";
 
 import "./style.css";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const Service = () => {
-  const [posts, setposts] = useState([]);
-  const [title, setTitle] = useState('');
-  const [Post, setPost] = useState('');
-  const [postImg, setPostImg] = useState('');
-  const [newcomment, setNewComment] = useState('');
-  const [local,setLocal]= useState("");
+const Services = () => {
+  const { id } = useParams();
+  const [Services, setServices] = useState("");
+  const [newcomment, setNewComment] = useState("");
 
-  const state = useSelector((state)=>{
-    return state
-  })
-  useEffect(() => {
-    getPosts();
-  }, []);
+  const serviceId = [];
+
+  const state = useSelector((state) => {
+    return state;
+  });
+
   useEffect(() => {
     const getToken = localStorage.getItem("token");
-    setLocal(getToken);
-    getPosts();
+    getServices(id);
   }, []);
-  const getPosts = async () => {
-    const result = await axios.get(`${BASE_URL}/service`,{
-    headers: {
-        Authorization: `Bearer ${state.Login.token}`,
-      },});
-      setposts(result.data);
-  };
-  const addPost = async () => {
-    await axios.post(
-      `${BASE_URL}/newPost`,
-      {
-        title:title,
-        desc:Post,
-        img:postImg
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${state.Login.token}`,
-        },
-      }
-    );
-  
-    getPosts(local);
-};
-
-const updatePost = async(id)=>{
-
- 
-  await axios.put(
-      `${BASE_URL}/updatepost/${id}`,
-      {
-        post: Post,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${state.Login.token}`,
-        }
-      }
-    );
-    getPosts(local);
-  }
-
-  const updatePostimg = async(id)=>{
-
- 
-    await axios.put(
-        `${BASE_URL}/updateimg/${id}`,
-        {
-          img: postImg,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${state.Login.token}`,
-          }
-        }
-      );
-      getPosts(local);
-    }
-
-  const deletePost =async(id)=>{
-     const res = await axios.delete(`${BASE_URL}/deletebyuser/${id}`, {
-          headers: {
-            Authorization: `Bearer ${state.Login.token}`,
-          },
-        })
-        getPosts();
-  }
-  const addcomment = async (postId) => {
+  const getServices = async (id) => {
     try {
-      const res = await axios.post(
-        `${BASE_URL}/newcomment`,
-        {
-          desc: newcomment,
-          postId: postId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${state.Login.token}`,
-          },
-        }
-      );
-      getPosts();
+      const result = await axios.get(`${BASE_URL}/service/${id}`);
+
+      setServices(result.data);
+
+      console.log(result.data,"<<<<<<<<<<");
     } catch (error) {
       console.log(error);
     }
   };
-  // const data = async () => {
-  //   // eslint-disable-next-line
-  //   const posts = await axios
-  //     .get(`${BASE_URL}/posts`)
-  //     .then((dete) => {
-  //       setposts(dete.data);
-
-  //       console.log(dete.data);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   data();
-  // }, []);
- 
+  const addcomment = async (serviceId) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/newcommentservice`,
+        {
+          desc: newcomment,
+          serviceId: serviceId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${state.Login.token}`,
+          },
+        }
+      );
+      getServices(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addlike = async (meetupId) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/newlikeservice`,
+        {
+          meetupId: meetupId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${state.Login.token}`,
+          },
+        }
+      );
+      getServices(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-  
+    <ChakraProvider>
+      <Wrap>
+        {console.log(Services)}
 
-    <div >
-    
-    <div >
-         <input
-           className="addInput"
-           onChange={(e) => setPost(e.target.value)}
-           placeholder="new post Desc"
-         />
-         <input
-           className="addInput"
-           onChange={(e) => setPostImg(e.target.value)}
-           placeholder="new Post Img"
-         />
-         <button className="addBtn" onClick={addPost}>
-           Add
-         </button>
-       </div>
-<div className="cards-container"> 
- {posts.map((item, i) => (<>
-   <div>
-    <h1>{item.titel}</h1> 
-    <h1>{item.post}</h1> 
+        <WrapItem>
+          
 
-   <ul>
-     <div className="photo">
-</div>      
-<div className="box">   
-     <input id="btubdat"onChange={(e)=>{setPost(e.target.value)}} placeholder="edit post "/>
-     
-     <button
-                   className="edit"
-                   onClick={() => updatePost(item._id)}
-                 >
-                   Edit post
-                 </button>
-                 </div>
-                 <div className="box">   
-     <input id="btubdat"onChange={(e)=>{setPost(e.target.value)}} placeholder="edit post "/>
-     
-     <button
-                   className="edit"
-                   onClick={() => updatePostimg(item._id)}
-                 >
-                   Edit img
-                 </button>
-                 </div>
+            <Box
+              mt="100"
+              boxShadow="dark-lg"
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              ml="20px"
+              w="800px"
+            >
+             
+              <Text fontSize="6xl">{Services.titel}</Text>
+              <Text fontSize="4xl">{Services.desc}</Text>
+              <Image
+                boxSize="100px"
+                objectFit="cover"
+                src="{Post.img}"
+                alt="post image"
+              />
+                
 
-     <li key={`img-${item._id}`}>
-       <img src={item.img} alt="postPic" width="300"/></li>
-     <div>
-                 
-                 <button
-                   className="delete"
-                   onClick={() => {deletePost(item._id)}}
-                 >
-                   Delete
-                 </button>
-                                {item.like.map(l => (
-    <>
-     <h1> 0000000000000000000000likes: {l._id}</h1>
-     {/* {console.log(l.id)} */}
-    </>  ))}
-                 {item.comment.map(s => (
-    <div className="pargraph">
-     <p> Comment: {s.desc}</p>
-    </div>
-
-   ))}
-    
-
- 
-   
-               </div>
+              <Box ml='10px'>
+              <Button 
                
-   </ul>
-   <input
-               className="commentInput"
-               onChange={e => {
-                 setNewComment(e.target.value);
-               }}
-               placeholder="add comment"
-             />
-             <button className="addBTN" onClick={()=> addcomment(item._id)}>
-               add
-             </button>
-   </div>
- </>))}</div>
+          colorScheme="red"
+          onClick={() => {
+            addlike(Services._id);
+          }}
+        >
+          like  {Services && Services.like.length}
 
+         
+          <AiFillHeart />
+          
+
+        </Button>
+        </Box>
+        
+            </Box>
+            <Box
+              mt="100"
+              ml="40"
+              boxShadow="2xl"
+              maxW={"330px"}
+              w={"330px"}
+              bg={"gray.100"}
+              rounded={"md"}
+              overflow={"hidden"}
+            >
+              <Image
+                h={"120px"}
+                w={"full"}
+                src={
+                  "https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                }
+                objectFit={"cover"}
+              />
+              <Flex justify={"center"} mt={-12}>
+                <Avatar
+                  size={"xl"}
+                  src={
+                    "https://cicloposse.com/wp-content/uploads/2016/03/blank-profile-picture-973460_960_720.png"
+                  }
+                  alt={"Author"}
+                  css={{
+                    border: "2px solid white",
+                  }}
+                />
+              </Flex>
+              <Box p={6}>
+                <Stack spacing={0} align={"center"} mb={5}>
+                  <Heading
+                    fontSize={"2xl"}
+                    fontWeight={500}
+                    fontFamily={"body"}
+                  >
+                      {Services &&
+          Services.userId.map((I) => (
+            <>
+              {I.username}
+              
+            </>
+          ))}{" "}
+                  </Heading>
+                  <Text color={"gray.500"}>user bio</Text>
+                </Stack>
+
+                <Stack direction={"row"} justify={"center"} spacing={6}>
+                  <Stack spacing={0} align={"center"}>
+                    <Text fontWeight={600}>0</Text>
+                    <Text fontSize={"sm"} color={"gray.500"}>
+                      Posts
+                    </Text>
+                  </Stack>
+                  <Stack spacing={0} align={"center"}>
+                    <Text fontWeight={600}>0</Text>
+                    <Text fontSize={"sm"} color={"gray.500"}>
+                      Meets up
+                    </Text>
+                    </Stack>
+                    <Stack spacing={0} align={"center"}>
+
+                    <Text fontWeight={600}>1</Text>
+                    <Text fontSize={"sm"} color={"gray.500"}>
+                      Services
+                    </Text>
+                  </Stack>
+                </Stack>
+                <Stack mt='10' direction={"row"} justify={"center"} spacing={6}>
+                <Stack spacing={0} align={"center"}>
+                    <Text fontWeight={600}>0</Text>
+                    <Text fontSize={"sm"} color={"gray.500"}>
+                      Followers
+                    </Text>
+                  </Stack>
+                  <Stack spacing={0} align={"center"}>
+                    <Text fontWeight={600}>0</Text>
+                    <Text fontSize={"sm"} color={"gray.500"}>
+                      Followers
+                    </Text>
+                    </Stack>
+               </Stack>
+
+
+                <Button
+                  w={"full"}
+                  mt={8}
+                  bg={("#151f21", "gray.900")}
+                  color={"white"}
+                  rounded={"md"}
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                  }}
+                >
+                  Follow
+                </Button>
+              </Box>
+            </Box>
+
+            
+        </WrapItem>
+        <Box>
+        {Services &&
+          Services.comment.map((s) => (
+            <>
+              <Box
+                              mt="40px"
+
+                ml="20px"
+                w="1000px"
+                boxShadow="outline"
+                p="6"
+                rounded="md"
+                bg="white"
+              >
+                {s.desc}
+                <p> by: {s.userid}</p>
+              </Box>
+
+              {/* <p> Comment: {s.desc}</p> */}
+            </>
+          ))}
+          </Box>
+      
+
+        
+
+
+
+      
+         
 
  
+        <Input
+          placeholder="large size"
+          w='1000px'
+          size="lg"
+          onChange={(e) => {
+            setNewComment(e.target.value);
+          }}
+        />
+        
 
-
-
-</div>
+        <Button
+        ml='10px'
+          colorScheme="teal"
+          variant="solid"
+          onClick={() => {
+            addcomment(Services._id);
+          }}
+        >
+          {" "}
+          <Icon  as={ChatIcon} mr="10px" />
+          post Comment
+        </Button>
+        
+        <br />
+        
+      </Wrap>
+    </ChakraProvider>
   );
 };
 
-export default Service;
+export default Services;

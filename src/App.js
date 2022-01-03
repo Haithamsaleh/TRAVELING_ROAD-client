@@ -13,6 +13,7 @@ import Meetup from './components/meetup'
 import Service from './components/Service';
 import PostsList from './components/postlist'
 import MeetsupList from './components/meetuplist'
+import ServicesList from './components/serviceslist'
 function App() {
   return (
 <><Navbar />
@@ -21,9 +22,12 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/Posts" element={<PostsList/>} />
           <Route path="/post/:id" element={<Posts/>} />
+          <Route path="/meetup/:id" element={<Meetup/>} />
 
           <Route path="/meetup" element={<MeetsupList/>} />
-          <Route path="/Service" element={<Service/>} />
+          <Route path="/Service" element={<ServicesList/>} />
+          <Route path="/Service/:id" element={<Service/>} />
+
           <Route path="/Login" element={<Login/>} />
           <Route path="/Navbar" element={<Navbar/>} />
           <Route path="/Singup" element={<Signup/>} />

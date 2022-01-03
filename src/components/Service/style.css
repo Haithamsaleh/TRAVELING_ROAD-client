@@ -49,7 +49,6 @@
   
   .info__name{
    text-align: center;
-    color: rgb(255, 255, 255);
     font-size: 3rem;
   }
   .info__price{
@@ -69,7 +68,6 @@
     text-align: center;
     text-decoration: none;
     background: #141e30;
-    color: white;
     border-radius: 0.8rem;
     font-size: 1.2rem;
     display: block;
