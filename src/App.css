@@ -5,6 +5,7 @@
   text-align: center;
 }
 
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -17,7 +18,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #319795;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -45,7 +46,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: rgb(0, 0, 0);
+  background-color: #319795;
 }
 
 .li2 {
@@ -68,5 +69,5 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-  background-color: #2F79C2;
+  background-color: #000000;
 }

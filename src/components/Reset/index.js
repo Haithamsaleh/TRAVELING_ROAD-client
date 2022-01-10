@@ -7,39 +7,12 @@ import axios from "axios";
 import PasswordChecklist from "react-password-checklist";
 import {
   ChakraProvider,
-  Box,
-  Text,
   VStack,
-  Code,
-  Grid,
-  theme,
   Button,
-  HStack,
   Input,
-  SimpleGrid,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   InputGroup,
   InputRightElement,
-  Center,
-  Square,
-  Circle,
   Heading,
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-  Textarea,
-  Select,
-  InputRightAddon,
-  InputLeftAddon,
-  Stack,
 } from "@chakra-ui/react";
 // import "./style.css";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -130,12 +103,7 @@ const Reset = () => {
       </InputRightElement>
     </InputGroup>
 
-         {/* <InputRightElement width='4.5rem'>
-        <Button h='1.75rem' size='sm' onClick={handleClick}>
-          {show ? 'Hide' : 'Show'}
-        </Button>
-      </InputRightElement> */}
-      {/* <ReactCodeInput fields={4} onComplete={(val) => setCode(val)} /> */}
+        
       <br/>
       <Button colorScheme='blue' id="resetPasswordButton" onClick={resetPass}>
         Reset

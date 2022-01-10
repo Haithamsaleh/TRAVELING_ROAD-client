@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { ref, uploadBytesResumable, getDownloadURL } from "@firebase/storage";
+import { storage } from "../../firebase";
+
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { ref, uploadBytesResumable, getDownloadURL } from "@firebase/storage";
-import { storage } from '../../firebase'
-
 import {
   ChakraProvider,
   Box,
   Text,
-  VStack,
   Button,
   HStack,
   Input,
@@ -25,44 +24,42 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
+  Tag,
   Textarea,
   Stack,
   Avatar,
-  Tag,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Image,
   chakra,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
-import { FaHeart,FaComment } from "react-icons/fa";
-
+import { FaHeart, FaComment } from "react-icons/fa";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const MeetsupList = () => {
+const ServicesList = () => {
   const [meetsup, setmeetsup] = useState([]);
   const [title, setTitle] = useState("");
-  const [Post, setPost] = useState("");// eslint-disable-next-line
+  const [Post, setPost] = useState(""); // eslint-disable-next-line
   const [postImg, setPostImg] = useState("");
-  const [date, setDate] = useState("");
-  const [dateE, setDateE] = useState("");
-
   const [local, setLocal] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure();// eslint-disable-next-line
+  const { isOpen, onOpen, onClose } = useDisclosure(); // eslint-disable-next-line
   const [message, setMessage] = useState("");
-  const [logedin, setLogedin] = useState(false);// eslint-disable-next-line
-  const [value, onChangev] = useState(null);
-  const [img, setImages] = useState("");// eslint-disable-next-line
-  const [progress, setProgress] = useState(0);
-
+  const [logedin, setLogedin] = useState(false); // eslint-disable-next-line
+  const [price, setPrice] = useState("");
   const firstField = React.useRef();
+  const [value, setValue] = React.useState("1"); // eslint-disable-next-line
+  const [progress, setProgress] = useState(0);
+  const [img, setImages] = useState("");
+
   const navigate = useNavigate();
+  const format = (val) => `$` + val;
+  const parse = (val) => val.replace(/^\$/, "");
 
-  const state = useSelector((state) => {
-    return{
-       state,
-      token: state.Login.token,
-
-    }
-  });
   const uploadPictures = (e) => {
     let image = e.target.files[0];
     const dataType = image.name.match(/\.(jpe?g|png|gif)$/gi);
@@ -79,8 +76,7 @@ const MeetsupList = () => {
       },
       (err) => console.log(err),
       () => {
-        getDownloadURL(uploadImamge.snapshot.ref)
-        .then((url) => {
+        getDownloadURL(uploadImamge.snapshot.ref).then((url) => {
           setImages([...img, url]);
         });
       }
@@ -90,22 +86,27 @@ const MeetsupList = () => {
     setProgress(0);
   }, [img]);
 
-
+  const state = useSelector((state) => {
+    return {
+      state,
+      token: state.Login.token,
+    };
+  });
   useEffect(() => {
     getPosts();
 
     if (state.token) {
       setLogedin(true);
       const getToken = localStorage.getItem("token");
-    setLocal(getToken);
+      setLocal(getToken);
     } else {
       setLogedin(false);
       const getToken = localStorage.getItem("token");
-    setLocal(getToken);
-    }// eslint-disable-next-line
+      setLocal(getToken);
+    } // eslint-disable-next-line
   }, [state]);
   const getPosts = async () => {
-    const result = await axios.get(`${BASE_URL}/meetup`, {
+    const result = await axios.get(`${BASE_URL}/service`, {
       headers: {
         Authorization: `Bearer ${state.token}`,
       },
@@ -113,64 +114,74 @@ const MeetsupList = () => {
     setmeetsup(result.data);
   };
   const addPost = async () => {
-    try{
-    await axios.post(
-      `${BASE_URL}/newmeetup`,
-      {
-        
-        titel: title,
-        desc: Post,
-        img: img[0],
-        dateofA:date,
-        dateofE:dateE,
-
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
+    try {
+      await axios.post(
+        `${BASE_URL}/newservice`,
+        {
+          titel: title,
+          desc: Post,
+          img: img[0],
+          price: value,
         },
-      }
-    );
-   
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
 
-    getPosts(local);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "logged in successfully ",
-      showConfirmButton: false,
-      timer: 2500,
-    });
-    navigate(`/`);
-
-  }catch(error){ Swal.fire({
-    position: "center",
-    icon: "error",
-    title: "lxxxxxxxx ",
-    showConfirmButton: false,
-    timer: 2500,
-  });}
-  navigate(`/`);
-
+      getPosts(local);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "posts successfule ",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+      navigate(`/`);
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Opss...! ,something wrong",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
   };
 
+  // const data = async () => {
+  //   // eslint-disable-next-line
+  //   const posts = await axios
+  //     .get(`${BASE_URL}/posts`)
+  //     .then((dete) => {
+  //       setposts(dete.data);
+
+  //       console.log(dete.data);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   data();
+  // }, []);
 
   return (
     <ChakraProvider>
-        {!logedin ? (<p></p>
-                  ):(
-                    <Box bg='gray.600'>
-      <Button  ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
-        New Meet Up
-      </Button>
-      </Box>
+      {!logedin ? (
+        <p></p>
+      ) : (
+        <Box bg="gray.600">
+        <Button  ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
+          New Service{" "}
+        </Button>
+        </Box>
       )}
 
       {meetsup.map((item, i) => (
         <>
-          <Link to={`/meetup/${item._id}`}>
-            
-          <Flex
+          <Link to={`/service/${item._id}`}>
+            {/* --------------------------------------- */}
+            <Flex
               bg="gray.600"
               p={50}
               w="full"
@@ -204,15 +215,12 @@ const MeetsupList = () => {
                         src={`${u.avatar}`}
                       />
                     </Flex>
-                    <Tag size='md'  variant='solid' colorScheme='teal'>
-      Meetup
-    </Tag>
-    <Tag ml='1' size='md'  variant='solid' colorScheme='red'>
-      Hot
-    </Tag>
-    <Tag ml='1' size='md'  variant='solid' colorScheme='green'>
-      NEW
-    </Tag>
+                    <Tag size="md" variant="solid" colorScheme="teal">
+                      Service
+                    </Tag>
+                    <Tag ml="1" size="md" variant="solid" colorScheme="red">
+                      Hot
+                    </Tag>
                     <chakra.h2
                       color="white"
                       fontSize={{ base: "2xl", md: "3xl" }}
@@ -236,7 +244,7 @@ const MeetsupList = () => {
                     </chakra.p>
 
                     <Flex justifyContent="end" mt={4}>
-                      <Text fontSize="xl" color="#888EC5">
+                      <Text  fontSize="xl" color="#888EC5">
                         {u.username}
                       </Text>
                     </Flex>
@@ -246,18 +254,13 @@ const MeetsupList = () => {
             </Flex>
             {/* ------------------------------------------------- */}
            
-        
-            
-
           </Link>
         </>
-      )
-      )}
+      ))}
 
       <Box>
         {message ? <Box>{message}</Box> : ""}{" "}
         <Drawer
-        
           isOpen={isOpen}
           placement="right"
           initialFocusRef={firstField}
@@ -266,73 +269,67 @@ const MeetsupList = () => {
         >
           <DrawerOverlay />
           <DrawerContent bg="gray.600">
-            <DrawerCloseButton  color="white" />
-            <DrawerHeader color="white" borderBottomWidth="1px">Meet Up </DrawerHeader>
+            <DrawerCloseButton  color='white' />
+            <DrawerHeader color="white" borderBottomWidth="1px">Service </DrawerHeader>
 
             <DrawerBody>
               <Stack spacing="24px">
                 <Box>
-                  <FormLabel color='white' htmlFor="text"> titel</FormLabel>
+                  <FormLabel color="white" htmlFor="text">
+                    What is the service you ready to provided{" "}
+                  </FormLabel>
                   <Input
-                  bg="white"
+                  bg='white'
                     id="text"
                     type="text"
-                    placeholder="could you please tell us the city you going to"
+                    placeholder="like driver ,room to rent...ex  "
                     onChange={(e) => setTitle(e.target.value)}
-                    />
+                  />
                 </Box>
 
                 <Box>
-                  <FormLabel color='white' htmlFor="text">tell us more About what looking ...</FormLabel>
-               
+                  <FormLabel color='white' htmlFor="text">
+                    Tell us more About your Service
+                  </FormLabel>
+                  {/* <Input
+                    id="text"
+                    type="text"
+                    // onChange={(e) => setEmail(e.target.value)}
+                  /> */}
                   <Textarea
-                  bg="white"
-           onChange={(e) => setPost(e.target.value)}
-           placeholder="tell us more About what looking ..."
+                  bg='white'
+                    onChange={(e) => setPost(e.target.value)}
+                    placeholder="Post descreption"
                     size="lg"
                   />
-                  <FormLabel color='white' htmlFor="text" onChange={(e) => setPostImg(e.target.value)}>Post imege</FormLabel>
-                  
+                  <FormLabel color='white' htmlFor="text">imege</FormLabel>
+
                   <InputGroup>
-                  <Input   
-                  bg='white'
-            type="file"
-            accept=".gif,.jpg,.jpeg,.png"
-            onChange={(e) => {
-              uploadPictures(e);
-            }}
-            id="img"
-          />
-          
-                    
-     
-         
+                    <Input
+                    bg='white'
+                      type="file"
+                      accept=".gif,.jpg,.jpeg,.png"
+                      onChange={(e) => {
+                        uploadPictures(e);
+                      }}
+                      id="img"
+                    />
                   </InputGroup>
-                  <Box mt={5} w={250} >
-                    <VStack>
-                        <FormLabel color='white' htmlFor="url">Date of arrival</FormLabel>
-
-                      <Input
-                      bg='white'
-                      type="date"
-                      id="date"
-                      onChange={(e) => setDate(e.target.value)}
-                      placeholder="Please enter domain"
-                      />
-                      <FormLabel color='white' htmlFor="url">TO</FormLabel>
-
-                     <Input
-                                           bg='white'
-
-                      type="date"
-                      id="date"
-                      onChange={(e) => setDateE(e.target.value)}
-                      placeholder="Please enter domain"
-                       />
-                       </VStack>
-                       </Box>
                 </Box>
               </Stack>
+              <FormLabel color='white' >Price/ Day</FormLabel>
+
+              <NumberInput
+              color='white'
+                onChange={(valueString) => setValue(parse(valueString))}
+                value={format(value)}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
             </DrawerBody>
 
             <DrawerFooter borderTopWidth="1px">
@@ -343,7 +340,10 @@ const MeetsupList = () => {
                 id="signupSubmitButton"
                 colorScheme="blue"
                 onClick={addPost}
-             
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   signup(e);
+                // }}
               >
                 {" "}
                 Post
@@ -352,10 +352,8 @@ const MeetsupList = () => {
           </DrawerContent>
         </Drawer>
       </Box>
-    
-
     </ChakraProvider>
   );
 };
 
-export default MeetsupList;
+export default ServicesList;
