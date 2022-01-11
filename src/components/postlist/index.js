@@ -294,7 +294,9 @@ const PostsList = () => {
                       </Text>
                     </Flex>
                     <Flex justifyContent="start" >
-
+                    {!logedin ? (
+          <p></p>
+        ) : (
 <Text
 
 color="white"
@@ -305,6 +307,7 @@ deletePost(item._id);
 <DeleteIcon />
 
 </Text>
+        )}
 </Flex>
               </Box>
                   </>
