@@ -40,16 +40,13 @@ const Home = () => {
 
   const slides = [
     {
-      img:
-        "https://images.pexels.com/photos/2599537/pexels-photo-2599537.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      label: "First Slide",
-      description: "Nulla vitae elit libero, a pharetra augue mollis interdum.",
+      img:'https://firebasestorage.googleapis.com/v0/b/mp-p-7f207.appspot.com/o/images%2FHegra_1281x786.jpg?alt=media&token=0f6f55ac-5357-4738-95de-993b2a8d4af7',
+      label : "alula",
     },
     {
       img:
-        "https://images.pexels.com/photos/2714581/pexels-photo-2714581.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      label: "Second Slide",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "https://firebasestorage.googleapis.com/v0/b/mp-p-7f207.appspot.com/o/images%2FAlHada_1920x1080_crop-1160x650.webp?alt=media&token=9ed5b8cd-ccaf-4f4f-843a-5bc8b403d014",
+      label: "Al-Hadā mountain",
     },
     {
       img:
@@ -66,9 +63,8 @@ const Home = () => {
     },
     {
       img:
-        "https://images.pexels.com/photos/3124111/pexels-photo-3124111.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      label: "Fifth Slide",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "https://firebasestorage.googleapis.com/v0/b/mp-p-7f207.appspot.com/o/images%2Friyadh_refresh_winter_campaign_card_1.jpg?alt=media&token=2d8b4566-dccd-4c9a-9143-16eaee9595f9",
+      label: "Al Masmak Fortress",
     },
   ];
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -85,7 +81,7 @@ const Home = () => {
     setCurrentSlide(slide);
   };
   const carouselStyle = {
-    transition: "all .5s",
+    transition: "all 1.5s",
     ml: `-${currentSlide * 100}%`,
   };
 
@@ -176,7 +172,7 @@ const Home = () => {
             bgSize="cover"
             style={{
               backgroundImage:
-                "url('https://images.unsplash.com/photo-1593642532400-2682810df593?ixlib=rb-1.2.1&ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80')",
+                "url('https://firebasestorage.googleapis.com/v0/b/mp-p-7f207.appspot.com/o/images%2Fezgif-5-926a9031b6.gif?alt=media&token=a5ae92df-7ab4-4a70-91df-8c88c530bee7')",
             }}
           ></Box>
         </Box>
@@ -223,8 +219,8 @@ const Home = () => {
       bg={("#F9FAFB", "gray.600")}
       
       w="full"
-      alignItems="start"
-      justifyContent="start"
+      alignItems="end"
+      justifyContent="end"
     >
       <Box
         bg={("white", "gray.800")}
@@ -276,7 +272,7 @@ const Home = () => {
             bgSize="cover"
             style={{
               backgroundImage:
-                "url('https://images.unsplash.com/photo-1593642532400-2682810df593?ixlib=rb-1.2.1&ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80')",
+                "url('https://firebasestorage.googleapis.com/v0/b/mp-p-7f207.appspot.com/o/images%2FNAJLA04_crop-1920x1080.webp?alt=media&token=c6c5c34c-6c7f-45bd-9400-4cc8fc2f563f')",
             }}
           ></Box>
         </Box>
@@ -308,7 +304,7 @@ const Home = () => {
             bgSize="cover"
             style={{
               backgroundImage:
-                "url('https://images.unsplash.com/photo-1593642532400-2682810df593?ixlib=rb-1.2.1&ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80')",
+                "url('https://firebasestorage.googleapis.com/v0/b/mp-p-7f207.appspot.com/o/images%2Fkfis_wwe_crown_jewel_1920x1080.jpg?alt=media&token=08c2cfac-920a-4955-9137-74d8e6de0c5f')",
             }}
           ></Box>
         </Box>
