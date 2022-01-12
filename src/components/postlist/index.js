@@ -10,6 +10,7 @@ import {
   ChakraProvider,
   Box,
   chakra,
+  VStack,
   Flex,
   Text,
   Button,
@@ -61,6 +62,8 @@ const PostsList = () => {
   const [logedin, setLogedin] = useState(false); // eslint-disable-next-line
   const [progress, setProgress] = useState(0);
   const [img, setImages] = useState("");
+  const [searchField, setSearchField] = useState("");
+  const [searchShow, setSearchShow] = useState(false);
 
   const firstField = React.useRef();
   const navigate = useNavigate();
@@ -89,6 +92,8 @@ const PostsList = () => {
   };
   useEffect(() => {
     setProgress(0);
+    getPosts();
+
   }, [img]);
 
   const state = useSelector((state) => {
@@ -98,7 +103,6 @@ const PostsList = () => {
     };
   });
   useEffect(() => {
-    getPosts();
     if (state.token) {
       setLogedin(true);
       const getToken = localStorage.getItem("token");
@@ -168,7 +172,32 @@ const PostsList = () => {
       }
     );
   };
+  const handleChange = (e) => {
+    setSearchField(e.target.value);
+    if (e.target.value === "") {
+      setSearchShow(false);
+      getPosts();
 
+    } else {
+      setSearchShow(true);
+      getPostsBySearch();
+    }
+  };
+  const getPostsBySearch = async () => {
+    try {
+      const result = await axios.get(`${BASE_URL}/posts`);
+      setposts(
+        result.data.filter((item) => {
+          return (
+            item.titel.toLowerCase().includes(searchField.toLowerCase()) ||
+            item.post.toLowerCase().includes(searchField.toLowerCase())
+          );
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const updatePosttitel = async (id) => {
     await axios.put(
       `${BASE_URL}/updateposttitel/${id}`,
@@ -206,7 +235,25 @@ const PostsList = () => {
   };
   return (
     <ChakraProvider>
-    
+    <Box bg="gray.600">
+      <VStack>
+      <HStack>
+
+      <Input
+      
+      alignItems="center"
+      textAlign="center"
+        width="80"
+        mt="39"
+        bg="#444"
+        placeholder="🔍 looking for something..."
+        fontSize="1.5rem"
+        color="white"
+        onChange={handleChange}
+      />      </HStack>
+
+      </VStack>
+      </Box>
 
         {!logedin ? (
           <p></p>

@@ -184,7 +184,7 @@ const Home = () => {
             fontWeight="bold"
           >
             Build Your New{" "}
-            <chakra.span color={("brand.600", "brand.400")}>
+            <chakra.span >
               Idea
             </chakra.span>
           </chakra.h2>
@@ -239,7 +239,7 @@ const Home = () => {
             fontWeight="bold"
           >
             Build Your New{" "}
-            <chakra.span color={("brand.600", "brand.400")}>
+            <chakra.span>
               Idea
             </chakra.span>
           </chakra.h2>

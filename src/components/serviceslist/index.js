@@ -13,6 +13,7 @@ import {
   Text,
   Button,
   HStack,
+  VStack,
   Input,
   FormLabel,
   InputGroup,
@@ -37,7 +38,7 @@ import {
   chakra,
   Flex,
 } from "@chakra-ui/react";
-import { FaHeart, FaComment } from "react-icons/fa";
+import { FaHeart, FaComment ,FaSistrix} from "react-icons/fa";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -55,6 +56,8 @@ const ServicesList = () => {
   const [value, setValue] = React.useState("1"); // eslint-disable-next-line
   const [progress, setProgress] = useState(0);
   const [img, setImages] = useState("");
+  const [searchField, setSearchField] = useState("");
+  const [searchShow, setSearchShow] = useState(false);
 
   const navigate = useNavigate();
   const format = (val) => `$` + val;
@@ -84,6 +87,8 @@ const ServicesList = () => {
   };
   useEffect(() => {
     setProgress(0);
+    getPosts();
+
   }, [img]);
 
   const state = useSelector((state) => {
@@ -93,8 +98,6 @@ const ServicesList = () => {
     };
   });
   useEffect(() => {
-    getPosts();
-
     if (state.token) {
       setLogedin(true);
       const getToken = localStorage.getItem("token");
@@ -103,6 +106,7 @@ const ServicesList = () => {
       setLogedin(false);
       const getToken = localStorage.getItem("token");
       setLocal(getToken);
+
     } // eslint-disable-next-line
   }, [state]);
   const getPosts = async () => {
@@ -113,6 +117,33 @@ const ServicesList = () => {
     });
     setmeetsup(result.data);
   };
+  const handleChange = (e) => {
+    setSearchField(e.target.value);
+    if (e.target.value === "") {
+      setSearchShow(false);
+      getPosts();
+
+    } else {
+      setSearchShow(true);
+      getPostsBySearch();
+    }
+  };
+  const getPostsBySearch = async () => {
+    try {
+      const result = await axios.get(`${BASE_URL}/service`);
+      setmeetsup(
+        result.data.filter((item) => {
+          return (
+            item.titel.toLowerCase().includes(searchField.toLowerCase()) ||
+            item.desc.toLowerCase().includes(searchField.toLowerCase())
+          );
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const addPost = async () => {
     try {
       await axios.post(
@@ -167,96 +198,116 @@ const ServicesList = () => {
 
   return (
     <ChakraProvider>
+      <Box bg="gray.600">
+      <VStack>
+      <HStack>
+
+      <Input
+      
+      alignItems="center"
+      textAlign="center"
+        width="80"
+        mt="39"
+        bg="#444"
+        placeholder="🔍 looking for something..."
+        fontSize="1.5rem"
+        color="white"
+        onChange={handleChange}
+      />      </HStack>
+
+      </VStack>
+      </Box>
       {!logedin ? (
         <p></p>
       ) : (
         <Box bg="gray.600">
-        <Button  ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
-          New Service{" "}
-        </Button>
+          <Button ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
+            New Service{" "}
+          </Button>
         </Box>
       )}
 
-      {meetsup && meetsup.map((item, i) => (
-        <>
-          <Link to={`/service/${item._id}`}>
-            {/* --------------------------------------- */}
-            <Flex
-              bg="gray.600"
-              p={50}
-              w="full"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Box
+      {meetsup &&
+        meetsup.map((item, i) => (
+          <>
+            <Link to={`/service/${item._id}`}>
+              {/* --------------------------------------- */}
+              <Flex
+                bg="gray.600"
+                p={50}
                 w="full"
-                mx="auto"
-                py={4}
-                px={8}
-                bg="gray.800"
-                shadow="lg"
-                rounded="lg"
+                alignItems="center"
+                justifyContent="center"
               >
-                {meetsup && item.userId.map((u) => (
-                  <>
-                    <Flex
-                      justifyContent={{ base: "center", md: "end" }}
-                      mt={-16}
-                    >
-                      <Avatar
-                        w={20}
-                        h={20}
-                        fit="cover"
-                        rounded="full"
-                        borderStyle="solid"
-                        borderWidth={2}
-                        borderColor="brand.400"
-                        alt={u.username}
-                        src={`${u.avatar}`}
-                      />
-                    </Flex>
-                    <Tag size="md" variant="solid" colorScheme="teal">
-                      Service
-                    </Tag>
-                    <Tag ml="1" size="md" variant="solid" colorScheme="red">
-                      Hot
-                    </Tag>
-                    <chakra.h2
-                      color="white"
-                      fontSize={{ base: "2xl", md: "3xl" }}
-                      mt={{ base: 2, md: 0 }}
-                      fontWeight="bold"
-                    >
-                      {item.titel}
-                    </chakra.h2>
-                    <HStack>
-                      <FaHeart color="white" />
-                      <Text color="white">{item.like.length}</Text>
+                <Box
+                  w="full"
+                  mx="auto"
+                  py={4}
+                  px={8}
+                  bg="gray.800"
+                  shadow="lg"
+                  rounded="lg"
+                >
+                  {meetsup &&
+                    item.userId.map((u) => (
+                      <>
+                        <Flex
+                          justifyContent={{ base: "center", md: "end" }}
+                          mt={-16}
+                        >
+                          <Avatar
+                            w={20}
+                            h={20}
+                            fit="cover"
+                            rounded="full"
+                            borderStyle="solid"
+                            borderWidth={2}
+                            borderColor="brand.400"
+                            alt={u.username}
+                            src={`${u.avatar}`}
+                          />
+                        </Flex>
+                        <Tag size="md" variant="solid" colorScheme="teal">
+                          Service
+                        </Tag>
+                        <Tag ml="1" size="md" variant="solid" colorScheme="red">
+                          Hot
+                        </Tag>
+                        <chakra.h2
+                          color="white"
+                          fontSize={{ base: "2xl", md: "3xl" }}
+                          mt={{ base: 2, md: 0 }}
+                          fontWeight="bold"
+                        >
+                          {item.titel}
+                        </chakra.h2>
+                        <HStack>
+                          <FaHeart color="white" />
+                          <Text color="white">{item.like.length}</Text>
 
-                      <FaComment color="white" />
-                      <Text color="white">{item.comment.length}</Text>
-                    </HStack>
-                    <chakra.p mt={2} color="gray.200">
-                      {item.desc}
-                    </chakra.p>
-                    <chakra.p mt={2} color="gray.200">
-                      {item.date}{" "}
-                    </chakra.p>
+                          <FaComment color="white" />
+                          <Text color="white">{item.comment.length}</Text>
+                        </HStack>
+                        <chakra.p mt={2} color="gray.200">
+                          {item.desc}
+                        </chakra.p>
+                        <chakra.p mt={2} color="gray.200">
+                          {item.date}{" "}
+                        </chakra.p>
 
-                    <Flex justifyContent="end" mt={4}>
-                      <Text  fontSize="xl" color="#888EC5">
-                        {u.username}
-                      </Text>
-                    </Flex>
-                  </>
-                ))}
-              </Box>
-            </Flex>
-            {/* ------------------------------------------------- */}
-           
-          </Link>
-        </>
-      ))}
+                        <Flex justifyContent="end" mt={4}>
+                          <Text fontSize="xl" color="#888EC5">
+                            {u.username}
+                          </Text>
+                        </Flex>
+                      </>
+                    ))}
+                </Box>
+              </Flex>
+              {/* ------------------------------------------------- */}
+            </Link>
+          </>
+        ))}
 
       <Box>
         {message ? <Box>{message}</Box> : ""}{" "}
@@ -269,8 +320,10 @@ const ServicesList = () => {
         >
           <DrawerOverlay />
           <DrawerContent bg="gray.600">
-            <DrawerCloseButton  color='white' />
-            <DrawerHeader color="white" borderBottomWidth="1px">Service </DrawerHeader>
+            <DrawerCloseButton color="white" />
+            <DrawerHeader color="white" borderBottomWidth="1px">
+              Service{" "}
+            </DrawerHeader>
 
             <DrawerBody>
               <Stack spacing="24px">
@@ -279,7 +332,7 @@ const ServicesList = () => {
                     What is the service you ready to provided{" "}
                   </FormLabel>
                   <Input
-                  bg='white'
+                    bg="white"
                     id="text"
                     type="text"
                     placeholder="like driver ,room to rent...ex  "
@@ -288,7 +341,7 @@ const ServicesList = () => {
                 </Box>
 
                 <Box>
-                  <FormLabel color='white' htmlFor="text">
+                  <FormLabel color="white" htmlFor="text">
                     Tell us more About your Service
                   </FormLabel>
                   {/* <Input
@@ -297,16 +350,18 @@ const ServicesList = () => {
                     // onChange={(e) => setEmail(e.target.value)}
                   /> */}
                   <Textarea
-                  bg='white'
+                    bg="white"
                     onChange={(e) => setPost(e.target.value)}
                     placeholder="Post descreption"
                     size="lg"
                   />
-                  <FormLabel color='white' htmlFor="text">imege</FormLabel>
+                  <FormLabel color="white" htmlFor="text">
+                    imege
+                  </FormLabel>
 
                   <InputGroup>
                     <Input
-                    bg='white'
+                      bg="white"
                       type="file"
                       accept=".gif,.jpg,.jpeg,.png"
                       onChange={(e) => {
@@ -317,10 +372,10 @@ const ServicesList = () => {
                   </InputGroup>
                 </Box>
               </Stack>
-              <FormLabel color='white' >Price/ Day</FormLabel>
+              <FormLabel color="white">Price/ Day</FormLabel>
 
               <NumberInput
-              color='white'
+                color="white"
                 onChange={(valueString) => setValue(parse(valueString))}
                 value={format(value)}
               >
@@ -333,7 +388,7 @@ const ServicesList = () => {
             </DrawerBody>
 
             <DrawerFooter borderTopWidth="1px">
-              <Button bg='white' variant="outline" mr={3} onClick={onClose}>
+              <Button bg="white" variant="outline" mr={3} onClick={onClose}>
                 Cancel
               </Button>
               <Button

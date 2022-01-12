@@ -52,6 +52,8 @@ const MeetsupList = () => {
   const [value, onChangev] = useState(null);
   const [img, setImages] = useState("");// eslint-disable-next-line
   const [progress, setProgress] = useState(0);
+  const [searchField, setSearchField] = useState("");
+  const [searchShow, setSearchShow] = useState(false);
 
   const firstField = React.useRef();
   const navigate = useNavigate();
@@ -88,11 +90,11 @@ const MeetsupList = () => {
   };
   useEffect(() => {
     setProgress(0);
+    getPosts();
   }, [img]);
 
 
   useEffect(() => {
-    getPosts();
 
     if (state.token) {
       setLogedin(true);
@@ -112,6 +114,33 @@ const MeetsupList = () => {
     });
     setmeetsup(result.data);
   };
+  const handleChange = (e) => {
+    setSearchField(e.target.value);
+    if (e.target.value === "") {
+      setSearchShow(false);
+      getPosts();
+
+    } else {
+      setSearchShow(true);
+      getPostsBySearch();
+    }
+  };
+  const getPostsBySearch = async () => {
+    try {
+      const result = await axios.get(`${BASE_URL}/meetup`);
+      setmeetsup(
+        result.data.filter((item) => {
+          return (
+            item.titel.toLowerCase().includes(searchField.toLowerCase()) ||
+            item.desc.toLowerCase().includes(searchField.toLowerCase())
+          );
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const addPost = async () => {
     try{
     await axios.post(
@@ -157,6 +186,25 @@ const MeetsupList = () => {
 
   return (
     <ChakraProvider>
+      <Box bg="gray.600">
+      <VStack>
+      <HStack>
+
+      <Input
+      
+      alignItems="center"
+      textAlign="center"
+        width="80"
+        mt="39"
+        bg="#444"
+        placeholder="🔍 looking for something..."
+        fontSize="1.5rem"
+        color="white"
+        onChange={handleChange}
+      />      </HStack>
+
+      </VStack>
+      </Box>
         {!logedin ? (<p></p>
                   ):(
                     <Box bg='gray.600'>

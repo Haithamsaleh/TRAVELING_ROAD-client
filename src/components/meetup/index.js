@@ -112,6 +112,7 @@ const [comments, setComments] = useState("");
 
   return (
     <ChakraProvider>
+      
                   <Box bg="#4A5568">
 
       <Wrap>
