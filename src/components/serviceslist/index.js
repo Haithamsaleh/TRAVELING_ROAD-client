@@ -177,7 +177,7 @@ const ServicesList = () => {
         </Box>
       )}
 
-      {meetsup.map((item, i) => (
+      {meetsup && meetsup.map((item, i) => (
         <>
           <Link to={`/service/${item._id}`}>
             {/* --------------------------------------- */}
@@ -197,7 +197,7 @@ const ServicesList = () => {
                 shadow="lg"
                 rounded="lg"
               >
-                {item.userId.map((u) => (
+                {meetsup && item.userId.map((u) => (
                   <>
                     <Flex
                       justifyContent={{ base: "center", md: "end" }}

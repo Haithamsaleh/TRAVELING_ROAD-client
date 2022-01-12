@@ -222,7 +222,6 @@ const Home = () => {
     <Flex
       bg={("#F9FAFB", "gray.600")}
       
-      pl={250}
       w="full"
       alignItems="start"
       justifyContent="start"
