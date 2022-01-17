@@ -302,7 +302,7 @@ const NavBar = () => {
                   justifySelf="self-start"
                   onClick={mobileNav.onClose}
                 />
-                <Button w="full" colorScheme="white" variant="solid" leftIcon={<AiFillHome />}>
+                <Button w="full" colorScheme="white" variant="solid" leftIcon={<AiFillHome />}  onClick={mobileNav.onClose}>
                 <Link to="/">home</Link>
 
                 </Button>
@@ -311,24 +311,50 @@ const NavBar = () => {
                   w="full"
                   variant="solid"
                   colorScheme="brand"
+                  onClick={mobileNav.onClose}
                 >
                 <Link to="/posts">Posts</Link>
+                
                 </Button>
                 <Button
                   w="full"
                   variant="solid"
-                  
+                  onClick={mobileNav.onClose}
+
                 >
-                                  <Link to="/meetup">MeetUp</Link>
+                   <Link to="/meetup">MeetUp</Link>
 
                 </Button>
                 <Button
                   w="full"
                   variant="solid"
+                  onClick={mobileNav.onClose}
+
                 >
-                                  <Link to="/Service">service</Link>
+                <Link to="/Service">Service</Link>
 
                 </Button>
+          <HStack >
+          {!logedin ? (
+              <>
+                  <Button  colorScheme="blue" onClick={() => {onOpen();mobileNav.onClose();}}>
+                    Sign up
+                  </Button>
+                  <Button  colorScheme="blue" onClick={() => {onOpenReportModal();mobileNav.onClose();}}>
+                    login
+                  </Button>
+              </>
+            ) : (
+              <>
+                  <Button  colorScheme="red" onClick={logOut}>
+                    logout
+                  </Button>
+                  <Button  colorScheme="green">
+                    Profile
+                  </Button>
+              </>
+            )}
+                </HStack>
               </VStack>
             </Box>
             <chakra.a
@@ -366,21 +392,16 @@ const NavBar = () => {
                 size="sm">
                 <Link to="/Service">Service</Link>
                 </Button>
-            </HStack>
-          </HStack>
-          <HStack
-            spacing={3}
-            display={mobileNav.isOpen ? "none" : "flex"}
-            alignItems="center"
-          >
-            {!logedin ? (
-              <>
-                  <Button  colorScheme="blue" onClick={onOpen}>
+                {!logedin ? (
+                  <>
+                <Box >
+                  <Button ml="580px"  colorScheme="blue" onClick={onOpen}>
                     Sign up
                   </Button>
-                  <Button  colorScheme="blue" onClick={onOpenReportModal}>
+                  <Button ml="10px" colorScheme="blue" onClick={onOpenReportModal}>
                     login
                   </Button>
+            </Box>
               </>
             ) : (
               <>
@@ -392,6 +413,14 @@ const NavBar = () => {
                   </Button>
               </>
             )}
+            </HStack>
+          </HStack>
+          <HStack
+            spacing={3}
+            display={mobileNav.isOpen ? "none" : "flex"}
+            alignItems="center"
+          >
+            
             <chakra.a
               p={3}
               color="inherit"
@@ -531,6 +560,7 @@ const NavBar = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
+                  
                 </Box>
 
                 <Box>
@@ -560,6 +590,9 @@ const NavBar = () => {
                       }}
                     />
                   </VStack>
+                  <Button fontSize='14'  colorScheme="blue" onClick={() => {onClose();onOpenReportModal();}}>
+                  Already have an account? go to Sign In 
+                  </Button>
                 </Box>
               </Stack>
             </DrawerBody>
@@ -570,7 +603,7 @@ const NavBar = () => {
               </Button>
               <Button
                 id="signupSubmitButton"
-                colorScheme="blue"
+                colorScheme="green"
                 onClick={(e) => {
                   e.preventDefault();
                   signup(e);
@@ -636,19 +669,7 @@ const NavBar = () => {
                     </InputRightElement>
                   </InputGroup>
                 </Box>
-
-                <Button colorScheme="blue" onClick={forgotPassword}>
-                  forgot your password?
-                </Button>
-              </Stack>
-            </DrawerBody>
-
-            <DrawerFooter borderTopWidth="1px">
-              <Button variant="outline" mr={3} onClick={onClose}>
-                Cancel
-              </Button>
-
-              <Button
+                <Button
                 colorScheme="green"
                 onClick={(e) => {
                   e.preventDefault();
@@ -658,6 +679,30 @@ const NavBar = () => {
                 {" "}
                 login
               </Button>
+                <Button colorScheme="blue" onClick={() => {forgotPassword();onCloseReportModal();}}>
+                  forgot your password?
+                </Button>
+                <Button ml='100px'  colorScheme="blue" onClick={() => {onCloseReportModal();onOpen();}}>
+                    Don't have accept? go to sign Up 
+                  </Button>
+              </Stack>
+            </DrawerBody>
+
+            <DrawerFooter borderTopWidth="1px">
+              {/* <Button variant="outline" mr={3} onClick={onClose}>
+                Cancel
+              </Button> */}
+
+              {/* <Button
+                colorScheme="green"
+                onClick={(e) => {
+                  e.preventDefault();
+                  login(e);
+                }}
+              >
+                {" "}
+                login
+              </Button> */}
             </DrawerFooter>
           </DrawerContent>
         </Drawer>

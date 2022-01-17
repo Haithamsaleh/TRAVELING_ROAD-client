@@ -6,6 +6,10 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { ref, uploadBytesResumable, getDownloadURL } from "@firebase/storage";
 import { storage } from '../../firebase'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import Loader from '../loader'
+import { DeleteIcon } from '@chakra-ui/icons'
 
 import {
   ChakraProvider,
@@ -44,6 +48,7 @@ const MeetsupList = () => {
   const [postImg, setPostImg] = useState("");
   const [date, setDate] = useState("");
   const [dateE, setDateE] = useState("");
+  const [done, setDone] = useState(undefined);
 
   const [local, setLocal] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();// eslint-disable-next-line
@@ -119,6 +124,8 @@ const MeetsupList = () => {
     if (e.target.value === "") {
       setSearchShow(false);
       getPosts();
+      setDone(true);
+
 
     } else {
       setSearchShow(true);
@@ -182,38 +189,49 @@ const MeetsupList = () => {
   navigate(`/`);
 
   };
-
+  const deletePost = async (id) => {
+    const res = await axios.delete(`${BASE_URL}/deletebyuser/${id}`, {
+      headers: {
+        Authorization: `Bearer ${state.token}`,
+      },
+    });
+    getPosts();
+  };
 
   return (
-    <ChakraProvider>
+   
+
+      <ChakraProvider>
       <Box bg="gray.600">
       <VStack>
       <HStack>
-
+      
       <Input
       
       alignItems="center"
       textAlign="center"
-        width="80"
-        mt="39"
-        bg="#444"
-        placeholder="🔍 looking for something..."
-        fontSize="1.5rem"
-        color="white"
-        onChange={handleChange}
+      width="80"
+      mt="39"
+      bg="#444"
+      placeholder="🔍 looking for something..."
+      fontSize="1.5rem"
+      color="white"
+      onChange={handleChange}
       />      </HStack>
-
+      
       </VStack>
-      </Box>
-        {!logedin ? (<p></p>
-                  ):(
-                    <Box bg='gray.600'>
-      <Button  ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
-        New Meet Up
-      </Button>
-      </Box>
+      </Box >
+      {!logedin ? (<p></p>
+        ):(
+          <Box bg='gray.600'>
+          <Button  ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
+          New Meet Up
+          </Button>
+          </Box>
       )}
-
+     
+     
+    
       {meetsup.map((item, i) => (
         <>
           <Link to={`/meetup/${item._id}`}>
@@ -224,8 +242,8 @@ const MeetsupList = () => {
               w="full"
               alignItems="center"
               justifyContent="center"
-            >
-              <Box
+              >
+             <Box
                 w="full"
                 mx="auto"
                 py={4}
@@ -233,13 +251,13 @@ const MeetsupList = () => {
                 bg="gray.800"
                 shadow="lg"
                 rounded="lg"
-              >
+                >
                 {item.userId.map((u) => (
                   <>
                     <Flex
                       justifyContent={{ base: "center", md: "end" }}
                       mt={-16}
-                    >
+                      >
                       <Avatar
                         w={20}
                         h={20}
@@ -250,7 +268,7 @@ const MeetsupList = () => {
                         borderColor="brand.400"
                         alt={u.username}
                         src={`${u.avatar}`}
-                      />
+                        />
                     </Flex>
                     <Tag size='md'  variant='solid' colorScheme='teal'>
       Meetup
@@ -266,7 +284,7 @@ const MeetsupList = () => {
                       fontSize={{ base: "2xl", md: "3xl" }}
                       mt={{ base: 2, md: 0 }}
                       fontWeight="bold"
-                    >
+                      >
                       {item.titel}
                     </chakra.h2>
                     <HStack>
@@ -288,10 +306,28 @@ const MeetsupList = () => {
                         {u.username}
                       </Text>
                     </Flex>
+  
                   </>
                 ))}
               </Box>
+              <Flex justifyContent="start" >
+                    {!logedin ? (
+          <p></p>
+        ) : (
+<Button
+zIndex='2'
+color="black"
+onClick={() => {
+deletePost(item._id);
+}}
+>
+<DeleteIcon />
+
+</Button>
+        )}
+</Flex>
             </Flex>
+     
             {/* ------------------------------------------------- */}
            
         
@@ -301,62 +337,63 @@ const MeetsupList = () => {
         </>
       )
       )}
-
+      
+      
       <Box>
-        {message ? <Box>{message}</Box> : ""}{" "}
-        <Drawer
-        
-          isOpen={isOpen}
-          placement="right"
-          initialFocusRef={firstField}
-          onClose={onClose}
-          size="full"
-        >
-          <DrawerOverlay />
-          <DrawerContent bg="gray.600">
-            <DrawerCloseButton  color="white" />
-            <DrawerHeader color="white" borderBottomWidth="1px">Meet Up </DrawerHeader>
-
-            <DrawerBody>
-              <Stack spacing="24px">
-                <Box>
-                  <FormLabel color='white' htmlFor="text"> titel</FormLabel>
-                  <Input
-                  bg="white"
-                    id="text"
-                    type="text"
-                    placeholder="could you please tell us the city you going to"
-                    onChange={(e) => setTitle(e.target.value)}
-                    />
-                </Box>
-
-                <Box>
-                  <FormLabel color='white' htmlFor="text">tell us more About what looking ...</FormLabel>
-               
-                  <Textarea
-                  bg="white"
-           onChange={(e) => setPost(e.target.value)}
-           placeholder="tell us more About what looking ..."
-                    size="lg"
-                  />
-                  <FormLabel color='white' htmlFor="text" onChange={(e) => setPostImg(e.target.value)}>Post imege</FormLabel>
-                  
-                  <InputGroup>
-                  <Input   
-                  bg='white'
-            type="file"
-            accept=".gif,.jpg,.jpeg,.png"
-            onChange={(e) => {
-              uploadPictures(e);
+      {message ? <Box>{message}</Box> : ""}{" "}
+      <Drawer
+      
+      isOpen={isOpen}
+      placement="right"
+      initialFocusRef={firstField}
+      onClose={onClose}
+      size="full"
+      >
+      <DrawerOverlay />
+      <DrawerContent bg="gray.600">
+      <DrawerCloseButton  color="white" />
+      <DrawerHeader color="white" borderBottomWidth="1px">Meet Up </DrawerHeader>
+      
+      <DrawerBody>
+      <Stack spacing="24px">
+      <Box>
+      <FormLabel color='white' htmlFor="text"> titel</FormLabel>
+      <Input
+      bg="white"
+      id="text"
+      type="text"
+      placeholder="could you please tell us the city you going to"
+      onChange={(e) => setTitle(e.target.value)}
+      />
+      </Box>
+      
+      <Box>
+      <FormLabel color='white' htmlFor="text">tell us more About what looking ...</FormLabel>
+      
+      <Textarea
+      bg="white"
+      onChange={(e) => setPost(e.target.value)}
+      placeholder="tell us more About what looking ..."
+      size="lg"
+      />
+      <FormLabel color='white' htmlFor="text" onChange={(e) => setPostImg(e.target.value)}>Post imege</FormLabel>
+      
+      <InputGroup>
+      <Input   
+      bg='white'
+      type="file"
+      accept=".gif,.jpg,.jpeg,.png"
+      onChange={(e) => {
+        uploadPictures(e);
             }}
             id="img"
-          />
-          
-                    
-     
-         
-                  </InputGroup>
-                  <Box mt={5} w={250} >
+            />
+            
+            
+            
+            
+            </InputGroup>
+            <Box mt={5} w={250} >
                     <VStack>
                         <FormLabel color='white' htmlFor="url">Date of arrival</FormLabel>
 
@@ -371,18 +408,18 @@ const MeetsupList = () => {
 
                      <Input
                                            bg='white'
-
-                      type="date"
-                      id="date"
-                      onChange={(e) => setDateE(e.target.value)}
-                      placeholder="Please enter domain"
-                       />
+                                           
+                                           type="date"
+                                           id="date"
+                                           onChange={(e) => setDateE(e.target.value)}
+                                           placeholder="Please enter domain"
+                                           />
                        </VStack>
                        </Box>
                 </Box>
               </Stack>
-            </DrawerBody>
-
+              </DrawerBody>
+              
             <DrawerFooter borderTopWidth="1px">
               <Button bg='white' variant="outline" mr={3} onClick={onClose}>
                 Cancel
@@ -391,7 +428,7 @@ const MeetsupList = () => {
                 id="signupSubmitButton"
                 colorScheme="blue"
                 onClick={addPost}
-             
+                
               >
                 {" "}
                 Post
@@ -400,9 +437,11 @@ const MeetsupList = () => {
           </DrawerContent>
         </Drawer>
       </Box>
-    
-
-    </ChakraProvider>
+      
+      
+      </ChakraProvider>
+      
+      
   );
 };
 

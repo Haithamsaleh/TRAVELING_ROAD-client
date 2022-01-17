@@ -3,6 +3,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import {
   ChakraProvider,
@@ -159,9 +161,9 @@ const navigate = useNavigate();
               w="800px"
             >
              
-              <Text p='10' color="white" fontSize="6xl">{Services.titel}</Text>
+              <Text p='10' color="white" fontSize="6xl">{Services.titel  || <Skeleton/>}</Text>
              
-              <Text p='10' color="white" fontSize="4xl">{Services.desc}</Text>
+              <Text p='10' color="white" fontSize="4xl">{Services.desc  || <Skeleton count={10} />}</Text>
               <Text p='10' color="white" fontSize="2xl">Price/ Day : {Services.price}$</Text>
 
               <Image

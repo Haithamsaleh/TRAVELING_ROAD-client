@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import {  useParams } from "react-router";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import {
   ChakraProvider,
@@ -130,8 +132,8 @@ const [comments, setComments] = useState("");
               w="60%"
             >
              
-              <Text p='10' color="white" fontSize="6xl">{meetsup.titel}</Text>
-              <Text p='10' color="white" fontSize="4xl">{meetsup.desc}</Text>
+              <Text p='10' color="white" fontSize="6xl">{meetsup.titel  || <Skeleton/>}</Text>
+              <Text p='10' color="white" fontSize="4xl">{meetsup.desc  || <Skeleton count={10} />}</Text>
               <Text p='10' color="white" fontSize="xl">Date of arrival: {meetsup.dateofA} TO :</Text>
 
               <Image

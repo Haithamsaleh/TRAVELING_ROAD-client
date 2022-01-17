@@ -6,6 +6,8 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import {
   ChakraProvider,
   Box,
@@ -31,7 +33,6 @@ import {
   Avatar,
   Tag,
   CircularProgress,
-  Skeleton,
   Spinner,
 } from "@chakra-ui/react";
 import { FaHeart, FaComment } from "react-icons/fa";
@@ -95,7 +96,7 @@ const PostsList = () => {
     getPosts();
 
   }, [img]);
-
+  
   const state = useSelector((state) => {
     return {
       state,
@@ -103,16 +104,20 @@ const PostsList = () => {
     };
   });
   useEffect(() => {
+
     if (state.token) {
       setLogedin(true);
       const getToken = localStorage.getItem("token");
       setLocal(getToken);
+
     } else {
       setLogedin(false);
       const getToken = localStorage.getItem("token");
       setLocal(getToken);
+
     } // eslint-disable-next-line
     // eslint-disable-next-line
+
   }, [state]);
 
   const getPosts = async () => {
@@ -181,6 +186,7 @@ const PostsList = () => {
     } else {
       setSearchShow(true);
       getPostsBySearch();
+
     }
   };
   const getPostsBySearch = async () => {
@@ -267,8 +273,10 @@ const PostsList = () => {
             </Box>
           </>
         )}
+        
                 {posts.map((item, i) => (
                   <>
+                  <Box>
           <Link to={`/post/${item._id}`}>
 
         {/* -------------------------------- */}
@@ -319,7 +327,7 @@ const PostsList = () => {
                       mt={{ base: 2, md: 0 }}
                       fontWeight="bold"
                     >
-                      {item.titel}
+                      {item.titel|| <Skeleton />}
                     </chakra.h2>
                     <HStack>
                       <FaHeart color="white" />
@@ -329,7 +337,7 @@ const PostsList = () => {
                       <Text color="white">{item.comment.length}</Text>
                     </HStack>
                     <chakra.p mt={2} color="gray.200">
-                      {item.post}
+                      {item.post || <Skeleton count={10} />}
                     </chakra.p>
                     <chakra.p mt={2} color="gray.200">
                       {item.date}{" "}
@@ -340,22 +348,7 @@ const PostsList = () => {
                         {u.username}
                       </Text>
                     </Flex>
-                    <Flex justifyContent="start" >
-                    {!logedin ? (
-          <p></p>
-        ) : (
-<Text
-
-color="white"
-onClick={() => {
-deletePost(item._id);
-}}
->
-<DeleteIcon />
-
-</Text>
-        )}
-</Flex>
+                   
               </Box>
                   </>
                 ))}
@@ -466,6 +459,25 @@ deletePost(item._id);
             </button>
               </Box> */}
             </Link>
+            </Box>
+            <Flex  bg="gray.600"
+ justifyContent="start" >
+                    {!logedin ? (
+          <></>
+        ) : (
+<Button
+
+color="gray.600"
+bg="white"
+onClick={() => {
+deletePost(item._id);
+}}
+>
+<DeleteIcon />
+
+</Button>
+        )}
+</Flex>
           </>
         ))}
 

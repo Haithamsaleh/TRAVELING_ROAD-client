@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 import {
   ChakraProvider,
   Box,
   Text,
-  Skeleton,
   Button,
   HStack,
   Input,
@@ -142,15 +144,14 @@ const Posts = () => {
               ml="20px"
               w="800px"
             >
-              <Skeleton isLoaded>
+              
                 <Text p='10' color="white" fontSize="6xl">
-                  {Post.titel}
+                  {Post.titel || <Skeleton />}
                 </Text>
                 <Text p='10' color="white" fontSize="4xl">
-                  {Post.post}
+                  {Post.post || <Skeleton count={10} />}
                 </Text>
                 <Image p='10'  objectFit="cover" src={Post.img} alt="post image" />
-              </Skeleton>
 
               {!logedin ? (
                 <p></p>
@@ -171,7 +172,6 @@ const Posts = () => {
             {Post &&
               Post.userId.map((item, I) => (
                 <>
-                  <Skeleton isLoaded>
                     <Box
                       mt="100"
                       ml="40"
@@ -193,7 +193,7 @@ const Posts = () => {
                       <Flex justify={"center"} mt={-12}>
                         <Avatar
                           size={"xl"}
-                          src={I.avatar}
+                          src={item.avatar}
                           alt={"Author"}
                           css={{
                             border: "2px solid white",
@@ -284,7 +284,6 @@ const Posts = () => {
                         )}
                       </Box>
                     </Box>
-                  </Skeleton>
                 </>
               ))}{" "}
           </WrapItem>
