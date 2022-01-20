@@ -13,6 +13,9 @@ import {
   Box,
   chakra,
   VStack,
+  EditableInput,
+  EditableControls,
+  Editable,
   Flex,
   Text,
   Button,
@@ -34,9 +37,25 @@ import {
   Tag,
   CircularProgress,
   Spinner,
+  useEditableControls,
+  CheckIon,
+  IconButton,
+  ButtonGroup,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Portal,
 } from "@chakra-ui/react";
 import { FaHeart, FaComment } from "react-icons/fa";
-import { DeleteIcon } from '@chakra-ui/icons'
+import { AiOutlinePlus } from "react-icons/ai";
+
+import { DeleteIcon  ,EditIcon } from '@chakra-ui/icons'
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -65,6 +84,11 @@ const PostsList = () => {
   const [img, setImages] = useState("");
   const [searchField, setSearchField] = useState("");
   const [searchShow, setSearchShow] = useState(false);
+  
+
+
+
+
 
   const firstField = React.useRef();
   const navigate = useNavigate();
@@ -176,6 +200,8 @@ const PostsList = () => {
         },
       }
     );
+    getPosts();
+
   };
   const handleChange = (e) => {
     setSearchField(e.target.value);
@@ -216,20 +242,23 @@ const PostsList = () => {
         },
       }
     );
+    getPosts();
+
   };
-  const updatePostimg = async (id) => {
-    await axios.put(
-      `${BASE_URL}/updateimg/${id}`,
-      {
-        img: img[0],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      }
-    );
-  };
+  // const updatePostimg = async (id) => {
+  //   await axios.put(
+  //     `${BASE_URL}/updateimg/${id}`,
+  //     {
+  //       img: img[0],
+  //     },
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${state.token}`,
+  //       },
+  //     }
+  //   );
+    
+  // };
 
   const deletePost = async (id) => {
     const res = await axios.delete(`${BASE_URL}/delete/${id}`, {
@@ -239,8 +268,12 @@ const PostsList = () => {
     });
     getPosts();
   };
+
+
+
   return (
     <ChakraProvider>
+      
     <Box bg="gray.600">
       <VStack>
       <HStack>
@@ -268,8 +301,7 @@ const PostsList = () => {
                   <Box bg="gray.600">
 
             <Button ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
-              new post
-            </Button>
+            <AiOutlinePlus/>            </Button>
             </Box>
           </>
         )}
@@ -327,7 +359,7 @@ const PostsList = () => {
                       mt={{ base: 2, md: 0 }}
                       fontWeight="bold"
                     >
-                      {item.titel|| <Skeleton />}
+                      {item.titel}
                     </chakra.h2>
                     <HStack>
                       <FaHeart color="white" />
@@ -337,7 +369,7 @@ const PostsList = () => {
                       <Text color="white">{item.comment.length}</Text>
                     </HStack>
                     <chakra.p mt={2} color="gray.200">
-                      {item.post || <Skeleton count={10} />}
+                      {item.post  }
                     </chakra.p>
                     <chakra.p mt={2} color="gray.200">
                       {item.date}{" "}
@@ -356,7 +388,75 @@ const PostsList = () => {
         {/* ----------------------------------------- */}
 
         
- {/* <Input
+            </Link>
+            </Box>
+            <Flex  bg="gray.600"
+ justifyContent="start" >
+                    {!logedin ? (
+          <></>
+        ) : (
+          <>
+<Button
+
+color="gray.600"
+bg="white"
+onClick={() => {
+deletePost(item._id);
+}}
+>
+<DeleteIcon />
+
+</Button>
+          <Box>
+    <Popover size='true'>
+  <PopoverTrigger>
+    <Button ml='10px' bg='white' ><EditIcon/></Button>
+  </PopoverTrigger>
+  <Portal>
+    <PopoverContent>
+      <PopoverArrow />
+      <PopoverHeader>Edit</PopoverHeader>
+      <PopoverCloseButton />
+      <PopoverBody>
+      <Input
+                id="btubdat"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                defaultValue={item.titel}
+                placeholder="edit post Desc"
+              />
+
+              <Button
+              colorScheme={'green'}
+                className="edit"
+                onClick={() => updatePosttitel(item._id)}
+              >
+                Edit titel
+              </Button>
+<Textarea
+mb={5}
+mt={5}
+                id="btubdat"
+                onChange={(e) => {
+                  setPost(e.target.value);
+                }}
+                defaultValue={item.post}
+
+                placeholder="edit post Desc"
+              />
+
+              <Button colorScheme={'green'} className="edit" onClick={() => updatePost(item._id)}>
+                Edit Desc
+              </Button>
+          
+      </PopoverBody>
+      <PopoverFooter></PopoverFooter>
+    </PopoverContent>
+  </Portal>
+</Popover>
+</Box>
+{/* <Input
                 id="btubdat"
                 onChange={(e) => {
                   setTitle(e.target.value);
@@ -372,9 +472,8 @@ const PostsList = () => {
               </Button>
 <Button mt="3" colorScheme="green" onClick={onOpenReportModal}>
   Edit Post
-</Button> */}
-            {/* <div className="box">
-              <input
+</Button>
+<Input
                 id="btubdat"
                 onChange={(e) => {
                   setPost(e.target.value);
@@ -382,100 +481,10 @@ const PostsList = () => {
                 placeholder="edit post Desc"
               />
 
-              <button className="edit" onClick={() => updatePost(item._id)}>
+              <Button colorScheme='green' className="edit" onClick={() => updatePost(item._id)}>
                 Edit Desc
-              </button>
-            </div>
-            <div className="box">
-              <input
-                id="btubdat"
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
-                placeholder="edit post Desc"
-              />
-
-              <Button
-                className="edit"
-                onClick={() => updatePosttitel(item._id)}
-              >
-                Edit titel
-              </Button>
-
-              
-            </div> */}
-
-
-            {/* <button
-              className="delete"
-              onClick={() => {
-                deletePost(item._id);
-              }}
-            >
-              Delete
-            </button> */}
-
-
-              {/* <Box
-                w="80%"
-                mt="10"
-                mb="10"
-                ml="10"
-                boxShadow="2xl"
-                p="6"
-                rounded="md"
-                bg="#ffff"
-                _hover={{ boxShadow: "outline" }}
-              >
-                {item.userId.map((u) => (
-                  <>
-                    <Avatar src={`${u.avatar}`} alt={`${u.username}`} mb={2} />
-
-                    <Text fontWeight={600}>{u.username}</Text>
-                  </>
-                ))}
-
-                <Text fontSize="6xl">{item.titel}</Text>
-
-                <HStack>
-                  <FaHeart /> <p>{item.like.length}</p>
-                  <FaComment />
-                  <p>{item.comment.length}</p>
-                </HStack>
-                <Tag ml="1" size="md" variant="solid" colorScheme="red">
-                  most like
-                </Tag>
-                <Tag ml="1" size="md" variant="solid" colorScheme="pink">
-                  WOW{" "}
-                </Tag>
-                <Text fontSize="xs">{item.date}</Text>
-                   <button
-              className="delete"
-              onClick={() => {
-                deletePost(item._id);
-              }}
-            >
-              Delete
-            </button>
-              </Box> */}
-            </Link>
-            </Box>
-            <Flex  bg="gray.600"
- justifyContent="start" >
-                    {!logedin ? (
-          <></>
-        ) : (
-<Button
-
-color="gray.600"
-bg="white"
-onClick={() => {
-deletePost(item._id);
-}}
->
-<DeleteIcon />
-
-</Button>
+              </Button> */}
+</>
         )}
 </Flex>
           </>
@@ -547,8 +556,9 @@ deletePost(item._id);
               </DrawerFooter>
             </DrawerContent>
           </Drawer>
+          
         </Box>
-      
+    
     </ChakraProvider>
   );
 };

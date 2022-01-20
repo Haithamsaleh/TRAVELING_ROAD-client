@@ -183,16 +183,12 @@ const Home = () => {
             color={("gray.800", "white")}
             fontWeight="bold"
           >
-            Build Your New{" "}
-            <chakra.span >
-              Idea
-            </chakra.span>
+            A uniquely Saudi experience
+            
           </chakra.h2>
           <chakra.p mt={4} color={("gray.600", "gray.400")}>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem
-            modi reprehenderit vitae exercitationem aliquid dolores ullam
-            temporibus enim expedita aperiam mollitia iure consectetur dicta
-            tenetur, porro consequuntur saepe accusantium consequatur.
+           Discover an exciting range of activities and Saudi destinations that are perfect for the cooler months of the year. Experience the thrill of Riyadh Seasons, the world's largest lifestyle festival, with a huge variety of entertainment and events for the whole family.
+Enjoy the temperate climate of the Red Sea for winter sun, sand and marine adventure.
           </chakra.p>
 
           <Box mt={8}>
@@ -238,16 +234,12 @@ const Home = () => {
             color={("gray.800", "white")}
             fontWeight="bold"
           >
-            Build Your New{" "}
             <chakra.span>
-              Idea
+              Meetup
             </chakra.span>
           </chakra.h2>
           <chakra.p mt={4} color={("gray.600", "gray.400")}>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem
-            modi reprehenderit vitae exercitationem aliquid dolores ullam
-            temporibus enim expedita aperiam mollitia iure consectetur dicta
-            tenetur, porro consequuntur saepe accusantium consequatur.
+          Whatever you’re looking to do this year, Meetup can help. For 20 years, people have turned to Meetup to meet people, make friends, find support, grow a business, and explore their interests. Thousands of events are happening every day—join the fun.
           </chakra.p>
 
           <Box mt={8}>
@@ -315,16 +307,14 @@ const Home = () => {
             color={("gray.800", "white")}
             fontWeight="bold"
           >
-            Build Your New{" "}
             <chakra.span color={("brand.600", "brand.400")}>
-              Idea
+              Services
             </chakra.span>
           </chakra.h2>
           <chakra.p mt={4} color={("gray.600", "gray.400")}>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem
-            modi reprehenderit vitae exercitationem aliquid dolores ullam
-            temporibus enim expedita aperiam mollitia iure consectetur dicta
-            tenetur, porro consequuntur saepe accusantium consequatur.
+          Are you planning your next vacation/trip, but you don’t want to waste time searching for the best things to see and do?
+Are you tired of scraping the web in search of the perfect flight/accommodation/guided tour/restaurant?
+look who can help you get the boring things done!
           </chakra.p>
 
           <Box mt={8}>

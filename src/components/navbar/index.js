@@ -168,6 +168,7 @@ const NavBar = () => {
     </Alert>;
     navigate("/");
   };
+  
   const login = async () => {
     setMessage("");
     try {
@@ -358,13 +359,16 @@ const NavBar = () => {
               </VStack>
             </Box>
             <chakra.a
-              href="/"
               title="TRAVELING ROAD"
               display="flex"
               alignItems="center"
             >
-                            <img src={logo} alt="error" width={100} height={40} />
+                              
 
+           
+                            <img 
+ src={logo} alt="error" width={100} height={40} />
+   
             </chakra.a>
 
             <HStack spacing={3} display={{ base: "none", md: "inline-flex" }}>
@@ -395,7 +399,7 @@ const NavBar = () => {
                 {!logedin ? (
                   <>
                 <Box >
-                  <Button ml="580px"  colorScheme="blue" onClick={onOpen}>
+                  <Button ml="540px"  colorScheme="blue" onClick={onOpen}>
                     Sign up
                   </Button>
                   <Button ml="10px" colorScheme="blue" onClick={onOpenReportModal}>
@@ -405,12 +409,14 @@ const NavBar = () => {
               </>
             ) : (
               <>
-                  <Button  colorScheme="red" onClick={logOut}>
+              <Box>
+                  <Button ml="540px"  colorScheme="red" onClick={logOut}>
                     logout
                   </Button>
-                  <Button  colorScheme="green">
+                  <Button ml="10px" colorScheme="green">
                     Profile
                   </Button>
+                  </Box>
               </>
             )}
             </HStack>

@@ -14,6 +14,7 @@ import Service from './components/Service';
 import PostsList from './components/postlist'
 import MeetsupList from './components/meetuplist'
 import ServicesList from './components/serviceslist'
+import Profile from './components/Profile'
 function App() {
   return (
 <><Navbar />
@@ -33,7 +34,8 @@ function App() {
           <Route path="/Singup" element={<Signup/>} />
           <Route path="/Account/:id" element={<Account/>} />
           <Route path="/ResetPass/:id" element={<Reset/>} />
-          
+          <Route path="/Profile" element={<Profile/>} />
+
      </Routes>  <div>
 </div>
 <div>

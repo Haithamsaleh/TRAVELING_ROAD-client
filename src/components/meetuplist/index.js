@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { ref, uploadBytesResumable, getDownloadURL } from "@firebase/storage";
 import { storage } from '../../firebase'
-import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import Loader from '../loader'
+
 import { DeleteIcon } from '@chakra-ui/icons'
+import { AiOutlinePlus } from "react-icons/ai";
 
 import {
   ChakraProvider,
@@ -34,9 +34,20 @@ import {
   Avatar,
   Tag,
   chakra,
-  Flex
+  Flex,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Portal,
 } from "@chakra-ui/react";
 import { FaHeart,FaComment } from "react-icons/fa";
+import { EditIcon } from '@chakra-ui/icons'
 
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -147,6 +158,8 @@ const MeetsupList = () => {
       console.log(error);
     }
   };
+  
+
 
   const addPost = async () => {
     try{
@@ -189,6 +202,38 @@ const MeetsupList = () => {
   navigate(`/`);
 
   };
+  const updatePosttitel = async (id) => {
+    await axios.put(
+      `${BASE_URL}/updatemeetuptitel/${id}`,
+      {
+        titel: title,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      }
+    );
+    getPosts();
+
+  };
+
+  const updatePost = async (id) => {
+    await axios.put(
+      `${BASE_URL}/updatemeetupDesc/${id}`,
+      {
+        desc: Post,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      }
+    );
+    getPosts();
+
+  };
+
   const deletePost = async (id) => {
     const res = await axios.delete(`${BASE_URL}/deletebyuser/${id}`, {
       headers: {
@@ -225,8 +270,7 @@ const MeetsupList = () => {
         ):(
           <Box bg='gray.600'>
           <Button  ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
-          New Meet Up
-          </Button>
+          <AiOutlinePlus/>          </Button>
           </Box>
       )}
      
@@ -234,6 +278,7 @@ const MeetsupList = () => {
     
       {meetsup.map((item, i) => (
         <>
+        <Box>
           <Link to={`/meetup/${item._id}`}>
             
           <Flex
@@ -243,6 +288,8 @@ const MeetsupList = () => {
               alignItems="center"
               justifyContent="center"
               >
+                {item.userId.map((u) => (
+                  <>
              <Box
                 w="full"
                 mx="auto"
@@ -252,8 +299,6 @@ const MeetsupList = () => {
                 shadow="lg"
                 rounded="lg"
                 >
-                {item.userId.map((u) => (
-                  <>
                     <Flex
                       justifyContent={{ base: "center", md: "end" }}
                       mt={-16}
@@ -306,17 +351,21 @@ const MeetsupList = () => {
                         {u.username}
                       </Text>
                     </Flex>
-  
+  </Box>
                   </>
                 ))}
-              </Box>
-              <Flex justifyContent="start" >
+                </Flex>
+             </Link>
+            </Box>
+              <Flex bg="gray.600" justifyContent="start" >
                     {!logedin ? (
           <p></p>
         ) : (
+          <>
+          
 <Button
-zIndex='2'
-color="black"
+color="gray.600"
+bg="white"
 onClick={() => {
 deletePost(item._id);
 }}
@@ -324,16 +373,58 @@ deletePost(item._id);
 <DeleteIcon />
 
 </Button>
-        )}
-</Flex>
-            </Flex>
-     
-            {/* ------------------------------------------------- */}
-           
-        
-            
+  <Box>
+  <Popover size='true'>
+<PopoverTrigger>
+  <Button ml='10px' bg='white' ><EditIcon/></Button>
+</PopoverTrigger>
+<Portal>
+  <PopoverContent>
+    <PopoverArrow />
+    <PopoverHeader>Edit</PopoverHeader>
+    <PopoverCloseButton />
+    <PopoverBody>
+    <Input
+              id="btubdat"
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+              defaultValue={item.titel}
+              placeholder="edit post Desc"
+            />
 
-          </Link>
+            <Button
+            colorScheme={'green'}
+              className="edit"
+              onClick={() => updatePosttitel(item._id)}
+            >
+              Edit titel
+            </Button>
+<Textarea
+mb={5}
+mt={5}
+              id="btubdat"
+              onChange={(e) => {
+                setPost(e.target.value);
+              }}
+              defaultValue={item.desc}
+
+              placeholder="edit  Desc"
+            />
+
+            <Button colorScheme={'green'} className="edit" onClick={() => updatePost(item._id)}>
+              Edit Desc
+            </Button>
+        
+    </PopoverBody>
+    <PopoverFooter></PopoverFooter>
+  </PopoverContent>
+</Portal>
+</Popover>
+</Box>
+       </> )}
+</Flex>
+            
         </>
       )
       )}
@@ -436,6 +527,7 @@ deletePost(item._id);
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
+
       </Box>
       
       

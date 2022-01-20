@@ -37,9 +37,20 @@ import {
   Image,
   chakra,
   Flex,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Portal,
 } from "@chakra-ui/react";
-import { FaHeart, FaComment ,FaSistrix} from "react-icons/fa";
-
+import { AiOutlinePlus } from "react-icons/ai";
+import { FaHeart, FaComment } from "react-icons/fa";
+import { EditIcon , DeleteIcon } from '@chakra-ui/icons'
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const ServicesList = () => {
@@ -181,6 +192,46 @@ const ServicesList = () => {
     }
   };
 
+  const updatePosttitel = async (id) => {
+    await axios.put(
+      `${BASE_URL}/updateservicetitel/${id}`,
+      {
+        titel: title,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      }
+    );
+    getPosts();
+
+  };
+
+  const updatePost = async (id) => {
+    await axios.put(
+      `${BASE_URL}/updateserviceDesc/${id}`,
+      {
+        desc: Post,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      }
+    );
+    getPosts();
+
+  };
+  const deletePost = async (id) => {
+    const res = await axios.delete(`${BASE_URL}/deleteservice/${id}`, {
+      headers: {
+        Authorization: `Bearer ${state.token}`,
+      },
+    });
+    getPosts();
+  };
+
   // const data = async () => {
   //   // eslint-disable-next-line
   //   const posts = await axios
@@ -222,7 +273,7 @@ const ServicesList = () => {
       ) : (
         <Box bg="gray.600">
           <Button ml="3" mt="3" colorScheme="blue" onClick={onOpen}>
-            New Service{" "}
+          <AiOutlinePlus/>
           </Button>
         </Box>
       )}
@@ -230,6 +281,7 @@ const ServicesList = () => {
       {meetsup &&
         meetsup.map((item, i) => (
           <>
+          <Box>
             <Link to={`/service/${item._id}`}>
               {/* --------------------------------------- */}
               <Flex
@@ -239,18 +291,18 @@ const ServicesList = () => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Box
-                  w="full"
-                  mx="auto"
-                  py={4}
-                  px={8}
-                  bg="gray.800"
-                  shadow="lg"
-                  rounded="lg"
-                >
                   {meetsup &&
                     item.userId.map((u) => (
                       <>
+                      <Box
+                        w="full"
+                        mx="auto"
+                        py={4}
+                        px={8}
+                        bg="gray.800"
+                        shadow="lg"
+                        rounded="lg"
+                      >
                         <Flex
                           justifyContent={{ base: "center", md: "end" }}
                           mt={-16}
@@ -300,12 +352,81 @@ const ServicesList = () => {
                             {u.username}
                           </Text>
                         </Flex>
+                        </Box>
                       </>
                     ))}
-                </Box>
+                
               </Flex>
-              {/* ------------------------------------------------- */}
             </Link>
+            </Box>
+            <Flex bg="gray.600" justifyContent="start" >
+                    {!logedin ? (
+          <p></p>
+        ) : (
+          <>
+          
+<Button
+color="gray.600"
+bg="white"
+onClick={() => {
+deletePost(item._id);
+}}
+>
+<DeleteIcon />
+
+</Button>
+  <Box>
+  <Popover size='true'>
+<PopoverTrigger>
+  <Button ml='10px' bg='white' ><EditIcon/></Button>
+</PopoverTrigger>
+<Portal>
+  <PopoverContent>
+    <PopoverArrow />
+    <PopoverHeader>Edit</PopoverHeader>
+    <PopoverCloseButton />
+    <PopoverBody>
+    <Input
+              id="btubdat"
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+              defaultValue={item.titel}
+              placeholder="edit post Desc"
+            />
+
+            <Button
+            colorScheme={'green'}
+              className="edit"
+              onClick={() => updatePosttitel(item._id)}
+            >
+              Edit titel
+            </Button>
+<Textarea
+mb={5}
+mt={5}
+              id="btubdat"
+              onChange={(e) => {
+                setPost(e.target.value);
+              }}
+              defaultValue={item.desc}
+
+              placeholder="edit  Desc"
+            />
+
+            <Button colorScheme={'green'} className="edit" onClick={() => updatePost(item._id)}>
+              Edit Desc
+            </Button>
+        
+    </PopoverBody>
+    <PopoverFooter></PopoverFooter>
+  </PopoverContent>
+</Portal>
+</Popover>
+</Box>
+       </> )}
+</Flex>
+           
           </>
         ))}
 
