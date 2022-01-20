@@ -106,7 +106,7 @@ npm start
 
 [Server repository Link](https://github.com/MP-Project-Haitham/client)
 
-[Deployed App Link](https://vercel.com/mp-p-haitham)
+[Deployed App Link](https://travelingroad.vercel.app)
 ### Slides
 
 
