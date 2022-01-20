@@ -134,7 +134,7 @@ const [comments, setComments] = useState("");
              
               <Text p='10' color="white" fontSize="6xl">{meetsup.titel  || <Skeleton/>}</Text>
               <Text p='10' color="white" fontSize="4xl">{meetsup.desc  || <Skeleton count={10} />}</Text>
-              <Text p='10' color="white" fontSize="xl">Date of arrival: {meetsup.dateofA} TO :</Text>
+              <Text p='10' color="white" fontSize="xl">Date of arrival: {meetsup.dateofA} TO :{meetsup.dateofE}</Text>
 
               <Image
                 boxSize="100px"
@@ -187,7 +187,7 @@ const [comments, setComments] = useState("");
                       <Flex justify={"center"} mt={-12}>
                         <Avatar
                           size={"xl"}
-                          src={I.avatar}
+                          src={item.avatar}
                           alt={"Author"}
                           css={{
                             border: "2px solid white",
@@ -217,7 +217,7 @@ const [comments, setComments] = useState("");
                         <Stack direction={"row"} justify={"center"} spacing={6}>
                           <Stack spacing={0} align={"center"}>
                             <Text color="white" fontWeight={600}>
-                              0
+                              3
                             </Text>
                             <Text
                               color="white"
@@ -227,13 +227,13 @@ const [comments, setComments] = useState("");
                             </Text>
                           </Stack>
                           <Stack spacing={0} align={"center"}>
-                            <Text color="white" fontWeight={600}>0</Text>
+                            <Text color="white" fontWeight={600}>2</Text>
                             <Text fontSize={"sm"} color="white">
                               Meets up
                             </Text>
                           </Stack>
                           <Stack spacing={0} align={"center"}>
-                            <Text color="white" fontWeight={600}>1</Text>
+                            <Text color="white" fontWeight={600}>2</Text>
                             <Text fontSize={"sm"} color="white">
                               Services
                             </Text>

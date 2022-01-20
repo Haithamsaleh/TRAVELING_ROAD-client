@@ -224,7 +224,7 @@ const Posts = () => {
                         <Stack direction={"row"} justify={"center"} spacing={6}>
                           <Stack spacing={0} align={"center"}>
                             <Text color="white" fontWeight={600}>
-                              0
+                              3
                             </Text>
                             <Text
                               color="white"
@@ -234,13 +234,13 @@ const Posts = () => {
                             </Text>
                           </Stack>
                           <Stack spacing={0} align={"center"}>
-                            <Text color="white" fontWeight={600}>0</Text>
+                            <Text color="white" fontWeight={600}>2</Text>
                             <Text fontSize={"sm"} color="white">
                               Meets up
                             </Text>
                           </Stack>
                           <Stack spacing={0} align={"center"}>
-                            <Text color="white" fontWeight={600}>1</Text>
+                            <Text color="white" fontWeight={600}>2</Text>
                             <Text fontSize={"sm"} color="white">
                               Services
                             </Text>

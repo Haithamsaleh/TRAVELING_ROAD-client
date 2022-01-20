@@ -46,6 +46,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   PopoverAnchor,
+  CircularProgress,
   Portal,
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -277,8 +278,27 @@ const ServicesList = () => {
           </Button>
         </Box>
       )}
-
-      {meetsup &&
+        {meetsup.length === 0 ? (
+            <>
+              <Flex
+              bg="gray.600"
+              p={50}
+              w="full"
+              alignItems="center"
+              justifyContent="center"
+            >
+                <CircularProgress
+              
+                  size="120px"
+                  mt="3"
+                  mb="3"
+                  isIndeterminate
+                  color="gray.600"
+                />
+              </Flex>
+            </>
+        ):(
+      meetsup &&
         meetsup.map((item, i) => (
           <>
           <Box>
@@ -428,7 +448,7 @@ mt={5}
 </Flex>
            
           </>
-        ))}
+        )))}
 
       <Box>
         {message ? <Box>{message}</Box> : ""}{" "}

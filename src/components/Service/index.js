@@ -232,7 +232,7 @@ const navigate = useNavigate();
                       <Flex justify={"center"} mt={-12}>
                         <Avatar
                           size={"xl"}
-                          src={I.avatar}
+                          src={item.avatar}
                           alt={"Author"}
                           css={{
                             border: "2px solid white",
@@ -262,7 +262,7 @@ const navigate = useNavigate();
                         <Stack direction={"row"} justify={"center"} spacing={6}>
                           <Stack spacing={0} align={"center"}>
                             <Text color="white" fontWeight={600}>
-                              0
+                              3
                             </Text>
                             <Text
                               color="white"
@@ -272,13 +272,13 @@ const navigate = useNavigate();
                             </Text>
                           </Stack>
                           <Stack spacing={0} align={"center"}>
-                            <Text color="white" fontWeight={600}>0</Text>
+                            <Text color="white" fontWeight={600}>2</Text>
                             <Text fontSize={"sm"} color="white">
                               Meets up
                             </Text>
                           </Stack>
                           <Stack spacing={0} align={"center"}>
-                            <Text color="white" fontWeight={600}>1</Text>
+                            <Text color="white" fontWeight={600}>2</Text>
                             <Text fontSize={"sm"} color="white">
                               Services
                             </Text>

@@ -305,8 +305,27 @@ const PostsList = () => {
             </Box>
           </>
         )}
-        
-                {posts.map((item, i) => (
+                {posts.length === 0 ? (
+            <>
+              <Flex
+              bg="gray.600"
+              p={50}
+              w="full"
+              alignItems="center"
+              justifyContent="center"
+            >
+                <CircularProgress
+              
+                  size="120px"
+                  mt="3"
+                  mb="3"
+                  isIndeterminate
+                  color="gray.600"
+                />
+              </Flex>
+            </>
+                ):(
+                posts.map((item, i) => (
                   <>
                   <Box>
           <Link to={`/post/${item._id}`}>
@@ -488,8 +507,8 @@ mt={5}
         )}
 </Flex>
           </>
-        ))}
-
+        ))
+)}
         <Box>
           {message ? <Box>{message}</Box> : ""}{" "}
           <Drawer
