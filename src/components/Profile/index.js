@@ -1,315 +1,158 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import PasswordChecklist from "react-password-checklist";
-import axios from "axios";
-// import "./style.css";
-import Swal from 'sweetalert2'
 
+import axios from "axios";
 import {
   ChakraProvider,
   Box,
+  Icon,
   Text,
-  Link,
   VStack,
-  Code,
-  Grid,
   theme,
-  Button,
-  HStack,
   Input,
+  Flex,
+  chakra,
+  Button,
+  Image,
   SimpleGrid,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  InputGroup,
-  InputRightElement,
-  Center, 
-  Square, 
-  Circle,
-  Heading,
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-  Textarea,
-  Select,
-  InputRightAddon,
-  InputLeftAddon,
-  Stack,
-  
- } from '@chakra-ui/react';
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+} from "@chakra-ui/react";
+import { MdHeadset, MdEmail, MdLocationOn ,MdPermIdentity } from "react-icons/md";
+import { BsFillBriefcaseFill } from "react-icons/bs";
 
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const Profile = () => {
-  const navigate = useNavigate();
+  const [user, setUser] = useState("");
   const [username, setUsername] = useState("");
-  const [show, setShow] = React.useState(false)
-  const handleClick = () => setShow(!show)
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const firstField = React.useRef()
+
+  const [avatar, setAvatar] = useState("");
+  const [flag, setFlag] = useState(false);
+
   const state = useSelector((state) => {
-    return {
-      token: state.Login.token,
-    };
+    return state;
   });
 
-  const signup = async () => {
-    setMessage("");
-    
-    const res = await axios.post(`${BASE_URL}/signUp`, {
-      username: username,
-      email: email,
-      password: password,
-      
-    });
-    try { 
-      Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'you will receive a confirmation email ',
-          showConfirmButton: true,
-          timer: 1500
-        })
-      navigate("/login");
-    } catch {
-      setMessage(res.data.message);
-        Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'make sure the email & the password are correct',
-        footer: '<a href="">Why do I have this issue?</a>'
+  const id = localStorage.getItem("id");
+  useEffect(() => {
+    result();
+    // eslint-disable-next-line
+  }, []);
+  const result = async () => {
+    await axios
+      .get(`${BASE_URL}/user/${id}`, {
+        // headers: { authorization: `Bearer ${state.Login.token}` },
       })
-    }
+      .then((result) => {
+        setUser(result.data);
+      });
   };
-
+  const updateUser = async () => {
+    await axios.put(
+      `${BASE_URL}/updateusername/${id}`,
+      {
+        username: username,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${state.Login.token}`,
+        },
+      }
+    );
+    setFlag(false);
+    result();
+  };
   return (
-   <ChakraProvider>
-
+    <ChakraProvider theme={theme}>
   
-
-    <div className="signupWrapper">
-      {state.token ? (
-        <h1>
-          <div className="centerWrapper">
-            <div className="homeSignupTitle">
-              <p>You already loggedin, you don't need to signup</p>
-            </div>
-            <div className="homeSignupButtons">
-              <button onClick={() => navigate("/")}>HOME</button>
-            </div>
-          </div>
-        </h1>
-      ) : (
-        
-        <main >
-           <Box>
-
-    <Button  colorScheme='teal' onClick={onOpen}>
-      Create user
-    </Button>
-    <Drawer
-      isOpen={isOpen}
-      placement='right'
-      initialFocusRef={firstField}
-      onClose={onClose}
+      {/* ----------------------------- */}
+      <Flex
+      bg={ "gray.600"}
+      p={50}
+      w="full"
+      alignItems="center"
+      justifyContent="center"
     >
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader borderBottomWidth='1px'>
-          Create a new account
-        </DrawerHeader>
+      <Box
+        w="sm"
+        mx="auto"
+        bg={ "gray.800"}
+        shadow="lg"
+        rounded="lg"
+        overflow="hidden"
+      >
+         {user &&
+              user.map((e) => (
+                <>
+        <Image
+          w="full"
+          h={56}
+          fit="cover"
+          objectPosition="center"
+          src={e.avatar}
+          alt="avatar"
+        />
 
-        <DrawerBody>
-          <Stack spacing='24px'>
-            <Box>
-            <FormLabel htmlFor='text'>User name</FormLabel>
-            <Input id='text' type='text' onChange={(e) => setUsername(e.target.value)} />
+        <Flex alignItems="center" px={6} py={3} bg="gray.900">
+          <Icon as={MdPermIdentity} h={6} w={6} color="white" />
 
-            </Box>
+          <chakra.h1 mx={3} color="white" fontWeight="bold" fontSize="lg">
+            {e.username}
+          </chakra.h1>
+        </Flex>
 
-            <Box>
-  <FormLabel htmlFor='email'>Email address</FormLabel>
-  <Input id='email' type='email' onChange={(e) => setEmail(e.target.value)} />
-  <FormHelperText>We'll never share your email.</FormHelperText>
+        <Box py={2} px={6}>
+       
 
-            </Box>
+          <chakra.p py={2} color={"gray.400"}>
+            {e.bio}
+          </chakra.p>
 
-            <Box>
-            <FormLabel htmlFor='email'>Password</FormLabel>
-              <InputGroup>
-              <Input
-        pr='4.5rem'
-        type={show ? 'text' : 'password'}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder='Enter password'
-      />
-      <InputRightElement width='4.5rem'>
-        <Button h='1.75rem' size='sm' onClick={handleClick}>
-          {show ? 'Hide' : 'Show'}
-        </Button>
-      </InputRightElement>
-              </InputGroup>
-            </Box>
+          <Flex
+            alignItems="center"
+            mt={4}
+            color={"gray.200"}
+          >
+            <Icon
+              as={BsFillBriefcaseFill}
+              as={BsFillBriefcaseFill}
+              h={6}
+              w={6}
+              mr={2}
+            />
 
-           
+            <chakra.h1 px={2} fontSize="sm">
+              Choc UI
+            </chakra.h1>
+          </Flex>
 
-            <Box>
-            <VStack>
- <PasswordChecklist
+          <Flex
+            alignItems="center"
+            mt={4}
+            color={"gray.200"}
+          >
+            <Icon as={MdLocationOn} h={6} w={6} mr={2} />
 
-              rules={[
-                "minLength",
-                "specialChar",
-                "number",
-                "capital",
-                "lowercase",
-              ]}
-              minLength={8}
-              value={password}
-              onChange={(isValid) => {
-                if (isValid) {
-                  const button = document.querySelector("#signupSubmitButton");
-                  button.disabled = false;
-                } else {
-                  const button = document.querySelector("#signupSubmitButton");
-                  button.disabled = true;
-                }
-              }}
-            />    </VStack>
-            </Box>
-          </Stack>
-        </DrawerBody>
+            <chakra.h1 px={2} fontSize="sm">
+              {e.hometown}
+            </chakra.h1>
+          </Flex>
+          <Flex
+            alignItems="center"
+            mt={4}
+            color={"gray.200"}
+          >
+            <Icon as={MdEmail} h={6} w={6} mr={2} />
 
-        <DrawerFooter borderTopWidth='1px'>
-          <Button variant='outline' mr={3} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button colorScheme='blue'>Submit</Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
-    
-  </Box>
-          <Box>
-            <VStack>
-            <Heading isTruncated>Signup</Heading>
+            <chakra.h1 px={2} fontSize="sm">
+              {e.email}
+            </chakra.h1>
+          </Flex>
+        </Box>
+                   </>   ))}
 
-            <h1>check Password:</h1>
-            <VStack>
- <PasswordChecklist
-
-              rules={[
-                "minLength",
-                "specialChar",
-                "number",
-                "capital",
-                "lowercase",
-              ]}
-              minLength={8}
-              value={password}
-              onChange={(isValid) => {
-                if (isValid) {
-                  const button = document.querySelector("#signupSubmitButton");
-                  button.disabled = false;
-                } else {
-                  const button = document.querySelector("#signupSubmitButton");
-                  button.disabled = true;
-                }
-              }}
-            />    </VStack>
-
-                        </VStack>
-
-           
-          </Box>
-          <Box >
-          <VStack>
-            {message ? <Box >{message}</Box> : ""}
-            
-            <form
-            
-              onSubmit={(e) => {
-                e.preventDefault();
-                signup(e);
-              }}
-            >         <Box></Box> <VStack>
-
-<FormControl>
-                
-                <FormLabel htmlFor='text'>User name</FormLabel>
-                <Input id='text' type='text' onChange={(e) => setUsername(e.target.value)} />
-              </FormControl>
-              {/* <input
-                type="text"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              /> */}
-              <FormControl>
-                
-  <FormLabel htmlFor='email'>Email address</FormLabel>
-  <Input id='email' type='email' onChange={(e) => setEmail(e.target.value)} />
-  <FormHelperText>We'll never share your email.</FormHelperText>
-</FormControl>
-              {/* <input
-                type="text"
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              /> */}
-              {/* <input
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              /> */}
-              <Box>
-                <FormLabel htmlFor='email'>Password</FormLabel>
-
-                  <InputGroup size='md'>
-                    
-      <Input
-        pr='4.5rem'
-        type={show ? 'text' : 'password'}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder='Enter password'
-      />
-      <InputRightElement width='4.5rem'>
-        <Button h='1.75rem' size='sm' onClick={handleClick}>
-          {show ? 'Hide' : 'Show'}
-        </Button>
-      </InputRightElement>
-    </InputGroup>
-    </Box>
-              <Button colorScheme='green'> <input
-                id="signupSubmitButton"
-                type="submit"n
-                value="Submit"
-                disabled
-              /></Button>
-                        </VStack>
-
-            </form>
-            </VStack>
-          </Box>
-        </main>
-      )}
-    </div>
-    {/* <VStack> <Button mt='10' mb='10' colorScheme='blue' onClick={() => navigate("/login")}>
-              or go to login
-            </Button> </VStack> */}
-            </ChakraProvider>
+      </Box>
+    </Flex>
+    </ChakraProvider>
   );
 };
-
 export default Profile;

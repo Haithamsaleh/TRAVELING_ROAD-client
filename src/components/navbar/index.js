@@ -177,7 +177,13 @@ const NavBar = () => {
         password: passwordd,
         username: emilOrUserName,
       });
-      dispatch(Loginn({ role: res.data.result.role, token: res.data.token }));
+      dispatch(
+        Loginn({
+           role: res.data.result.role,
+            token: res.data.token,
+            id: res.data.result._id,
+      }));
+      localStorage.setItem("id", res.data.result._id);
 
       Swal.fire({
         position: "center",
@@ -414,7 +420,7 @@ const NavBar = () => {
                     logout
                   </Button>
                   <Button ml="10px" colorScheme="green">
-                    Profile
+                  <Link to="/profile/id">Profile</Link>
                   </Button>
                   </Box>
               </>
