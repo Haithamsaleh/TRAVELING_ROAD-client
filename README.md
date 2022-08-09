@@ -1,6 +1,6 @@
-## Master Paece Project (Name)
+## TRAVELING ROAD
 
-(Name):the app focus on traveling and cultural exchange to make it essayer for the Tourists
+TRAVELING ROAD:the app focus on traveling and cultural exchange to make it essayer for the Tourists
 to konw and the touristic places and historical places from Residents of the area ,
 so the user can Post on the app his destination and ask about : what to do and not to do ,shops for necessities ,events can vists ,Restaurants...etc.
 and the other users commint on the post to help or even arrange meeting to discover the plece together and make new friends .
@@ -106,7 +106,7 @@ npm start
 
 [Server repository Link](https://github.com/MP-Project-Haitham/client)
 
-[Deployed App Link](https://travelingroad.vercel.app)
+[Deployed App Link](https://travelingroad.vercel.app/)
 ### Slides
 
 
